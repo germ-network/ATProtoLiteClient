@@ -1,0 +1,51 @@
+{
+  "originHash" : "54b69b27c1972ce4029606208ce2f69f538cc22d07717767e0f5755ed0400fce",
+  "pins" : [
+    {
+      "identity" : "atresolve",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/germ-network/ATResolve",
+      "state" : {
+        "revision" : "b446aeed42ac45642bdd88f6a0af7b6c253ac23d",
+        "version" : "1.1.1"
+      }
+    },
+    {
+      "identity" : "autonomous-comm-protocol",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/germ-network/autonomous-comm-protocol.git",
+      "state" : {
+        "revision" : "f939a2ff62b065dfd792dc9f11b75f2ddfa4adf1",
+        "version" : "1.1.9"
+      }
+    },
+    {
+      "identity" : "germshared",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:germ-network/GermShared.git",
+      "state" : {
+        "revision" : "7c41ba7b310f5590262878466dfd1be73945d4ef",
+        "version" : "1.5.1"
+      }
+    },
+    {
+      "identity" : "oauthenticator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/germ-network/OAuthenticator",
+      "state" : {
+        "revision" : "c839fac5aca8a3ea1b19491e22b24e9adbf5bf69",
+        "version" : "0.7.1"
+      }
+    },
+    {
+      "identity" : "swift-async-dns-resolver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-async-dns-resolver.git",
+      "state" : {
+        "revision" : "2836c57c4c7c784569331cc35a4fe18941f6c796",
+        "version" : "0.5.0"
+      }
+    }
+  ],
+  "version" : 3
+}
