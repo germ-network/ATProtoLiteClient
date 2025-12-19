@@ -9,6 +9,23 @@ import CryptoKit
 import Foundation
 import OAuthenticator
 
+private func authorizationServerUrls(authorizationServers: [String]?) -> [URL] {
+	var urls: [URL] = []
+
+	guard let authorizationServers = authorizationServers else {
+		return urls
+	}
+
+	for server in authorizationServers {
+		guard let url = URL.init(string: server) else {
+			continue
+		}
+		urls.append(url)
+	}
+
+	return urls
+}
+
 //store the loginstore and DPoPKey that (O)Authenticator needs
 public struct ATProtoOAuthenticator: Sendable {
 	public let signer: DPoPSigner.JWTGenerator
@@ -45,24 +62,33 @@ public struct ATProtoOAuthenticator: Sendable {
 		let clientConfig = try await ClientMetadata.load(
 			for: clientMetadataEndpoint, provider: responseProvider)
 
-		guard let serverHost = pdsURL.host() else {
+		guard let pdsHost = pdsURL.host() else {
 			throw ATProtoAPIError.badUrl
 		}
 
-		// Switch to bsky.social for server host
-		// TODO: GER-753 - Figure out PDS vs. server metadata host
-		let serverConfig =
-			if serverHost.hasSuffix("host.bsky.network") {
-				try await ServerMetadata.load(
-					for: ATProtoConstants.OAuth.baseHost,
-					provider: responseProvider
-				)
-			} else {
-				try await ServerMetadata.load(
-					for: serverHost,
-					provider: responseProvider
-				)
-			}
+		let pdsMetadata = try await ProtectedResourceMetadata.load(
+			for: pdsHost, provider: responseProvider)
+
+		// We should probably check that we can create the DPoP signatures with one
+		// of pdsMetadata.dpop_signing_alg_values_supported, or assert that it
+		// contains ES256, sicne theoretically other dpop signing algorithms may be
+		// used.
+
+		let authorizationServers = authorizationServerUrls(
+			authorizationServers: pdsMetadata.authorizationServers)
+
+		guard let authorizationServer = authorizationServers.first else {
+			throw ATProtoAPIError.badUrl
+		}
+
+		guard let authorizationServerHost = authorizationServer.host() else {
+			throw ATProtoAPIError.badUrl
+		}
+
+		let serverConfig = try await ServerMetadata.load(
+			for: authorizationServerHost,
+			provider: responseProvider
+		)
 
 		let tokenHandling = Bluesky.tokenHandling(
 			account: handleOrDid,
