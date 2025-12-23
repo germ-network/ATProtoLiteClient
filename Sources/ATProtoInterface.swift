@@ -5,6 +5,7 @@
 //  Created by Mark @ Germ on 12/22/25.
 //
 
+import CommProtocol
 import Foundation
 import OAuthenticator
 
@@ -15,4 +16,11 @@ public protocol ATProtoInterface: Sendable {
 		for host: String,
 		provider: URLResponseProvider
 	) async throws -> ServerMetadata
+	
+	func update(
+		delegateRecord: GermLexicon.MessagingDelegateRecord,
+		for did: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator,
+	) async throws
 }
