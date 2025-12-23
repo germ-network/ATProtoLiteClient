@@ -19,6 +19,13 @@ public struct ATProtoClient: ATProtoInterface {
 		try await .load(for: host, provider: provider)
 	}
 
+	public func loadClientMetadata(
+		for host: String,
+		provider: @Sendable (URLRequest) async throws -> (Data, URLResponse)
+	) async throws -> ClientMetadata {
+		try await .load(for: host, provider: provider)
+	}
+
 	public func pdsUrlFetcher() -> (ATProtoDID) async throws -> URL {
 		{
 			let pds =

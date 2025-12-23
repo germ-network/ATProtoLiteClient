@@ -17,6 +17,11 @@ public protocol ATProtoInterface: Sendable {
 		provider: URLResponseProvider
 	) async throws -> ServerMetadata
 
+	func loadClientMetadata(
+		for: String,
+		provider: URLResponseProvider
+	) async throws -> ClientMetadata
+
 	func pdsUrlFetcher() async -> ((ATProtoDID) async throws -> URL)
 	func profileRecordPDSFetcher() async -> (
 		(ATProtoDID, URL) async throws -> ATProtoDID.ProfileRecord
