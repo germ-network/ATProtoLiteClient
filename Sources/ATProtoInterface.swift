@@ -24,6 +24,13 @@ public protocol ATProtoInterface: Sendable {
 		authenticator: Authenticator,
 	) async throws
 
+	func updateKeyPackage(
+		for did: ATProtoDID,
+		newHello: AnchorHello,
+		pdsURL: URL,
+		authenticator: Authenticator,
+	) async throws
+
 	func deleteKeyPackage(
 		for did: ATProtoDID,
 		pdsURL: URL,

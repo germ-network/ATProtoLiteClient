@@ -8,8 +8,13 @@
 import CommProtocol
 import Foundation
 import OAuthenticator
+import os
 
 public actor MockATProto {
+	static let logger = Logger(
+		subsystem: "ATProtoLiteClient",
+		category: "MockATProto"
+	)
 	public init() {}
 
 	var resolvePDS: [ATProtoDID: URL] = [:]
@@ -24,6 +29,19 @@ public actor MockATProto {
 
 	private func pds(for did: ATProtoDID) throws -> MockPDS {
 		try pdsTable[resolvePDS[did].tryUnwrap].tryUnwrap
+	}
+
+	//legacy
+	public func setPDSKeyPackageRecord(
+		did: ATProtoDID,
+		hello: AnchorHello
+	) throws {
+		if let existing = try? pds(for: did).legacyKeyPackage,
+			(try? existing.wireFormat) != (try? hello.wireFormat)
+		{
+			Self.logger.notice("overwriting anchor blob")
+		}
+		try pds(for: did).legacyKeyPackage = hello
 	}
 
 	func deleteKeyPackage(
@@ -60,6 +78,18 @@ extension MockATProto: ATProtoInterface {
 		try write(
 			messagingDelegate: delegateRecord,
 			did: did
+		)
+	}
+
+	public func updateKeyPackage(
+		for did: ATProtoDID,
+		newHello: AnchorHello,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws {
+		try setPDSKeyPackageRecord(
+			did: did,
+			hello: newHello
 		)
 	}
 

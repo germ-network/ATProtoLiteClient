@@ -33,6 +33,20 @@ public struct ATProtoClient: ATProtoInterface {
 		)
 	}
 
+	public func updateKeyPackage(
+		for did: ATProtoDID,
+		newHello: AnchorHello,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws {
+		let _ = try await ATProtoAuthAPI.updateKeyPackage(
+			for: did.fullId,
+			newHello: try newHello.wireFormat,
+			pdsURL: pdsURL,
+			authenticator: authenticator
+		)
+	}
+
 	public func deleteKeyPackage(
 		for did: ATProtoDID,
 		pdsURL: URL,
