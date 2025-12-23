@@ -92,6 +92,16 @@ extension MockATProto: ATProtoInterface {
 		assert(resolvePDS[did] == pdsURL)
 		try pds(for: did).blocks.insert(subjectDID)
 	}
+	
+	public func deleteBlockRecord(
+		for myDid: ATProtoDID,
+		subjectDID: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws {
+		assert(resolvePDS[myDid] == pdsURL)
+		try pds(for: myDid).blocks.remove(subjectDID)
+	}
 }
 
 extension MockATProto {
@@ -107,7 +117,7 @@ extension MockATProto {
 	}
 
 	//legacy
-	public func setPDSKeyPackageRecord(
+	func setPDSKeyPackageRecord(
 		did: ATProtoDID,
 		hello: AnchorHello
 	) throws {

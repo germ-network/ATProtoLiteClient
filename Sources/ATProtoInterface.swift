@@ -13,32 +13,39 @@ import OAuthenticator
 //for local testing
 public protocol ATProtoInterface: Sendable {
 	func loadServerMetadata(
-		for host: String,
+		for: String,
 		provider: URLResponseProvider
 	) async throws -> ServerMetadata
 
 	func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
-		for did: ATProtoDID,
+		for: ATProtoDID,
 		pdsURL: URL,
 		authenticator: Authenticator,
 	) async throws
 
 	func updateKeyPackage(
-		for did: ATProtoDID,
+		for: ATProtoDID,
 		newHello: AnchorHello,
 		pdsURL: URL,
 		authenticator: Authenticator,
 	) async throws
 
 	func deleteKeyPackage(
-		for did: ATProtoDID,
+		for: ATProtoDID,
 		pdsURL: URL,
 		authenticator: Authenticator,
 	) async throws
 
 	func createBlockRecord(
-		for did: ATProtoDID,
+		for: ATProtoDID,
+		subjectDID: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws
+	
+	func deleteBlockRecord(
+		for: ATProtoDID,
 		subjectDID: ATProtoDID,
 		pdsURL: URL,
 		authenticator: Authenticator

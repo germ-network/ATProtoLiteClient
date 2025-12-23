@@ -72,4 +72,19 @@ public struct ATProtoClient: ATProtoInterface {
 			authenticator: authenticator
 		)
 	}
+	
+	public func deleteBlockRecord(
+		for myDid: ATProtoDID,
+		subjectDID: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws {
+		try await ATProtoAuthAPI
+			.deleteBlockRecord(
+				for: myDid.fullId,
+				subjectDID: subjectDID.fullId,
+				pdsURL: pdsURL,
+				authenticator: authenticator
+			)
+	}
 }
