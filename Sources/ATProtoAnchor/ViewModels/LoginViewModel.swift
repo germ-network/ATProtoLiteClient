@@ -71,7 +71,8 @@ import os
 			handleOrDid: handle,
 			pdsURL: pdsURL,
 			dpopSigner: oauthStorage.dPoPSigner,
-			loginStorage: oauthStorage.loginStorage
+			loginStorage: oauthStorage.loginStorage,
+			atProtoClient: ATProtoClient()
 		)
 		self._authenticator = newAuthenticator
 		return newAuthenticator

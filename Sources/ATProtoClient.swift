@@ -8,8 +8,8 @@
 import Foundation
 import OAuthenticator
 
-public enum ATProtoClient: ATProtoInterface {
-	static func loadServerMetadata(
+public struct ATProtoClient: ATProtoInterface {
+	public func loadServerMetadata(
 		for host: String,
 		provider: @Sendable (URLRequest) async throws -> (Data, URLResponse)
 	) async throws -> ServerMetadata {
