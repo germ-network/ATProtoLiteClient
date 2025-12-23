@@ -10,7 +10,7 @@ import OAuthenticator
 
 //lets us stub out online interfaces related to ATProto
 //for local testing
-public protocol ATProtoInterface {
+public protocol ATProtoInterface: Sendable {
 	func loadServerMetadata(
 		for host: String,
 		provider: URLResponseProvider
