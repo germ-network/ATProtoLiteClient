@@ -27,6 +27,18 @@ public protocol ATProtoInterface: Sendable {
 	func messageDelegateFetcher() async -> (
 		(ATProtoDID, URL) async throws -> GermLexicon.MessagingDelegateRecord
 	)
+	func followsFetcher(
+		did: ATProtoDID,
+		pdsUrl: URL
+	) async -> AsyncThrowingStream<[String], any Error>
+	//to be deprecated
+	func anchorIntroductionFetcher() async -> (
+		(
+			ATProtoDID,
+			URL,
+			AnchorPublicKey
+		) async throws -> AnchorHello.Verified.Archive?
+	)
 
 	func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,

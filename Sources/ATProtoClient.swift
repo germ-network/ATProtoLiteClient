@@ -69,6 +69,49 @@ public struct ATProtoClient: ATProtoInterface {
 		}
 	}
 
+	public func followsFetcher(did: ATProtoDID, pdsUrl: URL) async -> AsyncThrowingStream<
+		[String], any Error
+	> {
+		ATProtoPublicAPI.getFollowsStream(
+			for: did.fullId,
+			pdsURL: pdsUrl
+		)
+	}
+
+	public func anchorIntroductionFetcher() async -> (
+		ATProtoDID,
+		URL,
+		AnchorPublicKey
+	) async throws -> AnchorHello.Verified.Archive? {
+		{ (did, pdsUrl, anchorPubKey) in
+			do {
+				let record =
+					try await ATProtoPublicAPI.getKeyPackage(
+						did: did.fullId,
+						pdsURL: pdsUrl
+					)
+				let anchorHello = try AnchorHello.finalParse(
+					record.anchorHello
+				)
+				.tryUnwrap
+
+				do {
+					return try anchorPubKey.verify(
+						hello: anchorHello,
+						for: .init(anchorTo: did)
+					).archive
+				} catch {
+					// If verification fails, we want to return nil to overwrite the
+					// old value (to alert us that it's broken) instead of throwing,
+					// which would discard the new value
+					return nil
+				}
+			} catch ATProtoAPIError.recordNotFound {
+				return nil
+			}
+		}
+	}
+
 	public func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
 		for did: ATProtoDID,
