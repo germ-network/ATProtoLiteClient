@@ -147,4 +147,13 @@ extension MockATProto {
 		assert(resolvePDS[did] == pdsURL)
 		return try pds(for: did).blobs[cid].tryUnwrap
 	}
+	
+	public func updateBio(
+		for did: ATProtoDID,
+		newBio: String,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws {
+		try pds(for: did).profileRecord.profileText = newBio
+	}
 }

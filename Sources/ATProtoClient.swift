@@ -99,4 +99,18 @@ public struct ATProtoClient: ATProtoInterface {
 			pdsURL: pdsURL
 		)
 	}
+	
+	public func updateBio(
+		for did: ATProtoDID,
+		newBio: String,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws {
+		let _ = try await ATProtoAuthAPI.updateBio(
+			for: did.fullId,
+			newBio: newBio,
+			pdsURL: pdsURL,
+			authenticator: authenticator
+		)
+	}
 }
