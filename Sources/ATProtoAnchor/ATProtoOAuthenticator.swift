@@ -12,13 +12,14 @@ import OAuthenticator
 //store the loginstore and DPoPKey that (O)Authenticator needs
 public struct ATProtoOAuthenticator: Sendable {
 	public let signer: DPoPSigner.JWTGenerator
-	public let authenticator: Authenticator
+	private let authenticator: Authenticator
 
 	public init(
 		handleOrDid: String?,
 		pdsURL: URL,
 		dpopSigner: @escaping DPoPSigner.JWTGenerator,
 		loginStorage: LoginStorage,
+		atProtoClient: ATProtoInterface
 	) async throws {
 		let storageCopy = loginStorage
 		signer = dpopSigner
@@ -29,7 +30,8 @@ public struct ATProtoOAuthenticator: Sendable {
 				handleOrDid: handleOrDid,
 				pdsURL: pdsURL,
 				jwtGenerator: signer,
-				loginStorage: storageCopy
+				loginStorage: storageCopy,
+				atProtoClient: atProtoClient
 			)
 	}
 
@@ -38,12 +40,15 @@ public struct ATProtoOAuthenticator: Sendable {
 		pdsURL: URL,
 		jwtGenerator: @escaping DPoPSigner.JWTGenerator,
 		loginStorage: LoginStorage,
+		atProtoClient: ATProtoInterface,
 	) async throws -> Authenticator {
 		let responseProvider = URLSession.defaultProvider
 		let clientMetadataEndpoint = ATProtoConstants.OAuth.clientId
 
-		let clientConfig = try await ClientMetadata.load(
-			for: clientMetadataEndpoint, provider: responseProvider)
+		let clientConfig = try await atProtoClient.loadClientMetadata(
+			for: clientMetadataEndpoint,
+			provider: responseProvider
+		)
 
 		guard let serverHost = pdsURL.host() else {
 			throw ATProtoAPIError.badUrl
@@ -53,12 +58,12 @@ public struct ATProtoOAuthenticator: Sendable {
 		// TODO: GER-753 - Figure out PDS vs. server metadata host
 		let serverConfig =
 			if serverHost.hasSuffix("host.bsky.network") {
-				try await ServerMetadata.load(
+				try await atProtoClient.loadServerMetadata(
 					for: ATProtoConstants.OAuth.baseHost,
 					provider: responseProvider
 				)
 			} else {
-				try await ServerMetadata.load(
+				try await atProtoClient.loadServerMetadata(
 					for: serverHost,
 					provider: responseProvider
 				)
@@ -77,6 +82,14 @@ public struct ATProtoOAuthenticator: Sendable {
 		)
 
 		return Authenticator(config: config)
+	}
+}
+
+// Authentication - capture initial authentication and pass-through to
+// authenticate
+extension ATProtoOAuthenticator {
+	public func authenticate() async throws {
+		try await authenticator.authenticate()
 	}
 }
 

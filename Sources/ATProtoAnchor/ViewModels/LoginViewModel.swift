@@ -71,7 +71,8 @@ import os
 			handleOrDid: handle,
 			pdsURL: pdsURL,
 			dpopSigner: oauthStorage.dPoPSigner,
-			loginStorage: oauthStorage.loginStorage
+			loginStorage: oauthStorage.loginStorage,
+			atProtoClient: ATProtoClient()
 		)
 		self._authenticator = newAuthenticator
 		return newAuthenticator
@@ -83,7 +84,8 @@ import os
 				try await oauthStorage.clearLogin()
 				_authenticator = nil
 			} catch {
-				Self.logger.error("Error: clear login \(error.localizedDescription)") 
+				Self.logger.error(
+					"Error: clear login \(error.localizedDescription)")
 			}
 		}
 	}
