@@ -21,6 +21,12 @@ public protocol ATProtoInterface: Sendable {
 	func profileRecordPDSFetcher() async -> (
 		(ATProtoDID, URL) async throws -> ATProtoDID.ProfileRecord
 	)
+	func handleFetcher() async -> (
+		(ATProtoDID, URL) async throws -> String
+	)
+	func messageDelegateFetcher() async -> (
+		(ATProtoDID, URL) async throws -> GermLexicon.MessagingDelegateRecord
+	)
 
 	func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
