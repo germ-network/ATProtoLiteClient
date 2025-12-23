@@ -24,19 +24,6 @@ public protocol ATProtoInterface: Sendable {
 		authenticator: Authenticator,
 	) async throws
 
-	func updateKeyPackage(
-		for: ATProtoDID,
-		newHello: AnchorHello,
-		pdsURL: URL,
-		authenticator: Authenticator,
-	) async throws
-
-	func deleteKeyPackage(
-		for: ATProtoDID,
-		pdsURL: URL,
-		authenticator: Authenticator,
-	) async throws
-
 	func createBlockRecord(
 		for: ATProtoDID,
 		subjectDID: ATProtoDID,
@@ -56,4 +43,25 @@ public protocol ATProtoInterface: Sendable {
 		cid: ATProtoDID.CID,
 		pdsURL: URL,
 	) async throws -> Data
+	
+	//Deprecate
+	func updateKeyPackage(
+		for: ATProtoDID,
+		newHello: AnchorHello,
+		pdsURL: URL,
+		authenticator: Authenticator,
+	) async throws
+
+	func deleteKeyPackage(
+		for: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator,
+	) async throws
+	
+	func updateBio(
+		for did: ATProtoDID,
+		newBio: String,
+		pdsURL: URL,
+		authenticator: Authenticator,
+	) async throws
 }
