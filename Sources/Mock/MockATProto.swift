@@ -75,6 +75,28 @@ extension MockATProto: ATProtoInterface {
 		)
 	}
 
+	public func loadClientMetadata(
+		for: String, provider: (URLRequest) async throws -> (Data, URLResponse)
+	) async throws -> ClientMetadata {
+		try JSONDecoder().decode(
+			ClientMetadata.self,
+			from:
+				"""
+					{
+					"client_id": "https://static.germnetwork.com/client-metadata.json",
+					"client_name": "Germ Network, Inc.",
+					"redirect_uris": ["com.germnetwork.static:/oauth"],
+					"scope": "atproto transition:generic",
+					"grant_types": ["authorization_code", "refresh_token"],
+					"response_types": ["code"],
+					"token_endpoint_auth_method": "none",
+					"application_type": "native",
+					"dpop_bound_access_tokens": true
+					}
+				""".utf8Data
+		)
+	}
+
 	public func pdsUrlFetcher() -> @Sendable (ATProtoDID) async throws -> URL {
 		{ try await self.resolvePDS[$0].tryUnwrap }
 	}

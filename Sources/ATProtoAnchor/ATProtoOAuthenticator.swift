@@ -45,8 +45,10 @@ public struct ATProtoOAuthenticator: Sendable {
 		let responseProvider = URLSession.defaultProvider
 		let clientMetadataEndpoint = ATProtoConstants.OAuth.clientId
 
-		let clientConfig = try await ClientMetadata.load(
-			for: clientMetadataEndpoint, provider: responseProvider)
+		let clientConfig = try await atProtoClient.loadClientMetadata(
+			for: clientMetadataEndpoint,
+			provider: responseProvider
+		)
 
 		guard let pdsHost = pdsURL.host() else {
 			throw ATProtoAPIError.badUrl
