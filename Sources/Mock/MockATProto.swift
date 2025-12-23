@@ -87,6 +87,21 @@ extension MockATProto: ATProtoInterface {
 		}
 	}
 
+	public func handleFetcher() async -> @Sendable (ATProtoDID, URL) async throws -> String {
+		{ (did, _) in
+			try await self.handle(for: did).tryUnwrap
+		}
+	}
+
+	public func messageDelegateFetcher() async
+		-> @Sendable (ATProtoDID, URL) async throws -> GermLexicon.MessagingDelegateRecord
+	{
+		{ (did, _) in
+			try await self.messagingDelegateRecord(for: did)
+				.tryUnwrap
+		}
+	}
+
 	public func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
 		for did: ATProtoDID,
@@ -166,6 +181,26 @@ extension MockATProto {
 		}
 
 		return pdsTable[pdsUrl]?.profileRecord
+	}
+
+	func handle(for did: ATProtoDID) -> String? {
+		guard let pdsUrl = resolvePDS[did] else {
+			Self.logger.error("missing pdsUrl")
+			return nil
+		}
+
+		return pdsTable[pdsUrl]?.handle
+	}
+
+	func messagingDelegateRecord(
+		for did: ATProtoDID
+	) -> GermLexicon.MessagingDelegateRecord? {
+		guard let pdsUrl = resolvePDS[did] else {
+			Self.logger.error("missing pdsUrl")
+			return nil
+		}
+
+		return pdsTable[pdsUrl]?.germIdKeyPackage
 	}
 
 	//legacy

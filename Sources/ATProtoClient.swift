@@ -49,6 +49,26 @@ public struct ATProtoClient: ATProtoInterface {
 		}
 	}
 
+	public func handleFetcher() async -> (ATProtoDID, URL) async throws -> String {
+		{ (did, pdsUrl) in
+			try await ATProtoPublicAPI.getHandle(
+				did: did.fullId,
+				pdsURL: pdsUrl
+			)
+		}
+	}
+
+	public func messageDelegateFetcher() async -> (ATProtoDID, URL) async throws ->
+		GermLexicon.MessagingDelegateRecord
+	{
+		{ (did, pdsUrl) in
+			try await ATProtoPublicAPI.getGermMessagingDelegate(
+				did: did.fullId,
+				pdsURL: pdsUrl
+			)
+		}
+	}
+
 	public func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
 		for did: ATProtoDID,
