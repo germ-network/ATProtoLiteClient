@@ -20,38 +20,17 @@ public actor MockATProto {
 	var resolvePDS: [ATProtoDID: URL] = [:]
 	var pdsTable: [URL: MockPDS] = [:]
 
-	func write(
-		messagingDelegate: GermLexicon.MessagingDelegateRecord,
-		did: ATProtoDID
-	) throws {
-		try pds(for: did).germIdKeyPackage = messagingDelegate
-	}
+	public func createDid(handle: String = UUID().uuidString) throws -> ATProtoDID {
+		let newDid = ATProtoDID.mock()
+		let newUrl = URL(string: "https://example.com/\(UUID().uuidString)")!
 
-	private func pds(for did: ATProtoDID) throws -> MockPDS {
-		try pdsTable[resolvePDS[did].tryUnwrap].tryUnwrap
-	}
+		assert(resolvePDS[newDid] == nil)
+		assert(pdsTable[newUrl] == nil)
 
-	//legacy
-	public func setPDSKeyPackageRecord(
-		did: ATProtoDID,
-		hello: AnchorHello
-	) throws {
-		if let existing = try? pds(for: did).legacyKeyPackage,
-			(try? existing.wireFormat) != (try? hello.wireFormat)
-		{
-			Self.logger.notice("overwriting anchor blob")
-		}
-		try pds(for: did).legacyKeyPackage = hello
-	}
+		resolvePDS[newDid] = newUrl
+		pdsTable[newUrl] = .init(handle: handle)
 
-	func deleteKeyPackage(
-		for did: ATProtoDID,
-		pdsUrl: URL,
-		//		authenticatorInput: Authenticator.Input,
-	) throws {
-		//TODO, mock authenticator behavior
-		assert(resolvePDS[did] == pdsUrl)
-		try pds(for: did).legacyKeyPackage = nil
+		return newDid
 	}
 }
 
@@ -102,5 +81,41 @@ extension MockATProto: ATProtoInterface {
 			for: did,
 			pdsUrl: pdsURL,
 		)
+	}
+}
+
+extension MockATProto {
+	func write(
+		messagingDelegate: GermLexicon.MessagingDelegateRecord,
+		did: ATProtoDID
+	) throws {
+		try pds(for: did).germIdKeyPackage = messagingDelegate
+	}
+
+	private func pds(for did: ATProtoDID) throws -> MockPDS {
+		try pdsTable[resolvePDS[did].tryUnwrap].tryUnwrap
+	}
+
+	//legacy
+	public func setPDSKeyPackageRecord(
+		did: ATProtoDID,
+		hello: AnchorHello
+	) throws {
+		if let existing = try? pds(for: did).legacyKeyPackage,
+			(try? existing.wireFormat) != (try? hello.wireFormat)
+		{
+			Self.logger.notice("overwriting anchor blob")
+		}
+		try pds(for: did).legacyKeyPackage = hello
+	}
+
+	func deleteKeyPackage(
+		for did: ATProtoDID,
+		pdsUrl: URL,
+		//		authenticatorInput: Authenticator.Input,
+	) throws {
+		//TODO, mock authenticator behavior
+		assert(resolvePDS[did] == pdsUrl)
+		try pds(for: did).legacyKeyPackage = nil
 	}
 }
