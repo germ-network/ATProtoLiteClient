@@ -82,6 +82,16 @@ extension MockATProto: ATProtoInterface {
 			pdsUrl: pdsURL,
 		)
 	}
+
+	public func createBlockRecord(
+		for did: ATProtoDID,
+		subjectDID: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws {
+		assert(resolvePDS[did] == pdsURL)
+		try pds(for: did).blocks.insert(subjectDID)
+	}
 }
 
 extension MockATProto {
