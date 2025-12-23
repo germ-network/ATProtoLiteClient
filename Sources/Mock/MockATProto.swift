@@ -11,19 +11,29 @@ import OAuthenticator
 
 public actor MockATProto {
 	public init() {}
-	
+
 	var resolvePDS: [ATProtoDID: URL] = [:]
 	var pdsTable: [URL: MockPDS] = [:]
-	
+
 	func write(
 		messagingDelegate: GermLexicon.MessagingDelegateRecord,
 		did: ATProtoDID
 	) throws {
 		try pds(for: did).germIdKeyPackage = messagingDelegate
 	}
-	
+
 	private func pds(for did: ATProtoDID) throws -> MockPDS {
 		try pdsTable[resolvePDS[did].tryUnwrap].tryUnwrap
+	}
+
+	func deleteKeyPackage(
+		for did: ATProtoDID,
+		pdsUrl: URL,
+		//		authenticatorInput: Authenticator.Input,
+	) throws {
+		//TODO, mock authenticator behavior
+		assert(resolvePDS[did] == pdsUrl)
+		try pds(for: did).legacyKeyPackage = nil
 	}
 }
 
@@ -40,7 +50,7 @@ extension MockATProto: ATProtoInterface {
 				""".utf8Data
 		)
 	}
-	
+
 	public func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
 		for did: ATProtoDID,
@@ -50,6 +60,17 @@ extension MockATProto: ATProtoInterface {
 		try write(
 			messagingDelegate: delegateRecord,
 			did: did
+		)
+	}
+
+	public func deleteKeyPackage(
+		for did: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws {
+		try deleteKeyPackage(
+			for: did,
+			pdsUrl: pdsURL,
 		)
 	}
 }
