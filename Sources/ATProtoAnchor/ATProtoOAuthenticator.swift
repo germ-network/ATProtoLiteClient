@@ -12,7 +12,7 @@ import OAuthenticator
 //store the loginstore and DPoPKey that (O)Authenticator needs
 public struct ATProtoOAuthenticator: Sendable {
 	public let signer: DPoPSigner.JWTGenerator
-	public let authenticator: Authenticator
+	private let authenticator: Authenticator
 
 	public init(
 		handleOrDid: String?,
@@ -84,6 +84,47 @@ public struct ATProtoOAuthenticator: Sendable {
 		)
 
 		return Authenticator(config: config)
+	}
+}
+
+// Authentication - capture initial authentication and pass-through to
+// authenticate
+extension ATProtoOAuthenticator {
+	//simple way to prevent concurrent writes and reads and isolate login var
+	//Caller will be on main thread anyway
+	@MainActor
+	static func captureInitialLogin(
+		handle: String,
+		pdsUrl: URL,
+		dpopSigner: @escaping DPoPSigner.JWTGenerator,
+	) async throws -> Login {
+		var login: Login?
+		let authenticator = try await ATProtoOAuthenticator(
+			handleOrDid: handle,
+			pdsURL: pdsUrl,
+			dpopSigner: dpopSigner,
+			loginStorage: .init(
+				retrieveLogin: { @MainActor in
+					login
+				},
+				storeLogin: { @MainActor newLogin in
+					login = newLogin
+				}
+			)
+		)
+
+		//TODO: when we change upstream to return the authenticate
+		try await authenticator.authenticator.authenticate()
+
+		guard let login else {
+			throw ATProtoClientError.missingLogin
+		}
+
+		return login
+	}
+
+	func authenticate() async throws {
+		try await authenticator.authenticate()
 	}
 }
 

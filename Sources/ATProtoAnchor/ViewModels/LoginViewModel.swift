@@ -83,7 +83,8 @@ import os
 				try await oauthStorage.clearLogin()
 				_authenticator = nil
 			} catch {
-				Self.logger.error("Error: clear login \(error.localizedDescription)") 
+				Self.logger.error(
+					"Error: clear login \(error.localizedDescription)")
 			}
 		}
 	}
