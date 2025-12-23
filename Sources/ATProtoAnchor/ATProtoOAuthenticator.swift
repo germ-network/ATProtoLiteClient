@@ -93,7 +93,7 @@ extension ATProtoOAuthenticator {
 	//simple way to prevent concurrent writes and reads and isolate login var
 	//Caller will be on main thread anyway
 	@MainActor
-	static func captureInitialLogin(
+	static public func captureInitialLogin(
 		handle: String,
 		pdsUrl: URL,
 		dpopSigner: @escaping DPoPSigner.JWTGenerator,
@@ -123,7 +123,7 @@ extension ATProtoOAuthenticator {
 		return login
 	}
 
-	func authenticate() async throws {
+	public func authenticate() async throws {
 		try await authenticator.authenticate()
 	}
 }
