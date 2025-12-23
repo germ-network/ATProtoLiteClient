@@ -52,10 +52,12 @@ public struct ATProtoOAuthenticator: Sendable {
 		let pdsMetadata = try await ProtectedResourceMetadata.load(
 			for: pdsHost, provider: responseProvider)
 
-		// We should probably check that we can create the DPoP signatures with one
-		// of pdsMetadata.dpop_signing_alg_values_supported, or assert that it
-		// contains ES256, sicne theoretically other dpop signing algorithms may be
-		// used.
+		//https://datatracker.ietf.org/doc/html/rfc7518#section-3.1
+		guard let supportedAlgs = pdsMetadata.dpopSigningAlgValuesSupported,
+			supportedAlgs.contains("ES256")
+		else {
+			throw ATProtoAPIError.notImplemented
+		}
 
 		guard
 			let authorizationServers = pdsMetadata.authorizationServers,
