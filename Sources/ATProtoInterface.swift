@@ -16,9 +16,15 @@ public protocol ATProtoInterface: Sendable {
 		for host: String,
 		provider: URLResponseProvider
 	) async throws -> ServerMetadata
-	
+
 	func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
+		for did: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator,
+	) async throws
+
+	func deleteKeyPackage(
 		for did: ATProtoDID,
 		pdsURL: URL,
 		authenticator: Authenticator,
