@@ -9,23 +9,6 @@ import CryptoKit
 import Foundation
 import OAuthenticator
 
-private func authorizationServerUrls(authorizationServers: [String]?) -> [URL] {
-	var urls: [URL] = []
-
-	guard let authorizationServers = authorizationServers else {
-		return urls
-	}
-
-	for server in authorizationServers {
-		guard let url = URL.init(string: server) else {
-			continue
-		}
-		urls.append(url)
-	}
-
-	return urls
-}
-
 //store the loginstore and DPoPKey that (O)Authenticator needs
 public struct ATProtoOAuthenticator: Sendable {
 	public let signer: DPoPSigner.JWTGenerator
@@ -74,14 +57,12 @@ public struct ATProtoOAuthenticator: Sendable {
 		// contains ES256, sicne theoretically other dpop signing algorithms may be
 		// used.
 
-		let authorizationServers = authorizationServerUrls(
-			authorizationServers: pdsMetadata.authorizationServers)
-
-		guard let authorizationServer = authorizationServers.first else {
-			throw ATProtoAPIError.badUrl
-		}
-
-		guard let authorizationServerHost = authorizationServer.host() else {
+		guard
+			let authorizationServers = pdsMetadata.authorizationServers,
+			let authorizationServerUrl = authorizationServers.first,
+			let authorizationServer = URL(string: authorizationServerUrl),
+			let authorizationServerHost = authorizationServer.host()
+		else {
 			throw ATProtoAPIError.badUrl
 		}
 
