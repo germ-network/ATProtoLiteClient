@@ -18,6 +18,17 @@ public struct ATProtoClient: ATProtoInterface {
 	) async throws -> ServerMetadata {
 		try await .load(for: host, provider: provider)
 	}
+	
+	public func pdsUrlFetcher() -> (ATProtoDID) async throws -> URL {
+		{
+			let pds =
+			try await ATProtoPublicAPI
+				.getPds(for: $0.fullId)
+				.tryUnwrap
+			
+			return try URL(string: pds).tryUnwrap
+		}
+	}
 
 	public func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,

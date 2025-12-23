@@ -47,6 +47,10 @@ extension MockATProto: ATProtoInterface {
 				""".utf8Data
 		)
 	}
+	
+	public func pdsUrlFetcher() -> @Sendable (ATProtoDID) async throws -> URL {
+		{ try await self.resolvePDS[$0].tryUnwrap }
+	}
 
 	public func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
