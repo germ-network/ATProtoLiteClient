@@ -18,15 +18,34 @@ public struct ATProtoClient: ATProtoInterface {
 	) async throws -> ServerMetadata {
 		try await .load(for: host, provider: provider)
 	}
-	
+
 	public func pdsUrlFetcher() -> (ATProtoDID) async throws -> URL {
 		{
 			let pds =
-			try await ATProtoPublicAPI
+				try await ATProtoPublicAPI
 				.getPds(for: $0.fullId)
 				.tryUnwrap
-			
+
 			return try URL(string: pds).tryUnwrap
+		}
+	}
+
+	public func profileRecordPDSFetcher()
+		async -> (ATProtoDID, URL) async throws -> ATProtoDID.ProfileRecord
+	{
+		{ (did, pdsURL) in
+			let result =
+				try await ATProtoPublicAPI
+				.getProfileRecord(did: did.fullId, pdsURL: pdsURL)
+
+			return .init(
+				displayName: result.displayName,
+				profileText: result.description,
+				avatarCid: result.avatarBlob?.reference
+					.link,
+				bannerCid: result.bannerBlob?.reference
+					.link,
+			)
 		}
 	}
 
@@ -83,7 +102,7 @@ public struct ATProtoClient: ATProtoInterface {
 			authenticator: authenticator
 		)
 	}
-	
+
 	public func deleteBlockRecord(
 		for myDid: ATProtoDID,
 		subjectDID: ATProtoDID,
@@ -98,7 +117,7 @@ public struct ATProtoClient: ATProtoInterface {
 				authenticator: authenticator
 			)
 	}
-	
+
 	public func fetchImage(
 		did: ATProtoDID,
 		cid: ATProtoDID.CID,
@@ -110,7 +129,7 @@ public struct ATProtoClient: ATProtoInterface {
 			pdsURL: pdsURL
 		)
 	}
-	
+
 	public func updateBio(
 		for did: ATProtoDID,
 		newBio: String,

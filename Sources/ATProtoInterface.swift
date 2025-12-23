@@ -16,8 +16,11 @@ public protocol ATProtoInterface: Sendable {
 		for: String,
 		provider: URLResponseProvider
 	) async throws -> ServerMetadata
-	
+
 	func pdsUrlFetcher() async -> ((ATProtoDID) async throws -> URL)
+	func profileRecordPDSFetcher() async -> (
+		(ATProtoDID, URL) async throws -> ATProtoDID.ProfileRecord
+	)
 
 	func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
@@ -32,20 +35,20 @@ public protocol ATProtoInterface: Sendable {
 		pdsURL: URL,
 		authenticator: Authenticator
 	) async throws
-	
+
 	func deleteBlockRecord(
 		for: ATProtoDID,
 		subjectDID: ATProtoDID,
 		pdsURL: URL,
 		authenticator: Authenticator
 	) async throws
-	
+
 	func fetchImage(
 		did: ATProtoDID,
 		cid: ATProtoDID.CID,
 		pdsURL: URL,
 	) async throws -> Data
-	
+
 	//Deprecate
 	func updateKeyPackage(
 		for: ATProtoDID,
@@ -59,7 +62,7 @@ public protocol ATProtoInterface: Sendable {
 		pdsURL: URL,
 		authenticator: Authenticator,
 	) async throws
-	
+
 	func updateBio(
 		for did: ATProtoDID,
 		newBio: String,

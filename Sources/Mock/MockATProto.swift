@@ -20,6 +20,33 @@ public actor MockATProto {
 	var resolvePDS: [ATProtoDID: URL] = [:]
 	var pdsTable: [URL: MockPDS] = [:]
 
+	private var holdPDS: (AsyncStream<Void>, AsyncStream<Void>.Continuation)?
+}
+
+extension MockATProto {
+	func holdPDSResponses() {
+		assert(holdPDS == nil)
+		holdPDS = AsyncStream<Void>.makeStream()
+	}
+
+	func releaseHold() {
+		assert(holdPDS != nil)
+		if let holdPDS {
+			self.holdPDS = nil
+			holdPDS.1.yield()
+			holdPDS.1.finish()
+		}
+	}
+
+	func awaitHold() async {
+		if let holdPDS {
+			for await _ in holdPDS.0 {
+				print("waiting")
+			}
+			print("finished")
+		}
+	}
+
 	public func createDid(handle: String = UUID().uuidString) throws -> ATProtoDID {
 		let newDid = ATProtoDID.mock()
 		let newUrl = URL(string: "https://example.com/\(UUID().uuidString)")!
@@ -47,9 +74,17 @@ extension MockATProto: ATProtoInterface {
 				""".utf8Data
 		)
 	}
-	
+
 	public func pdsUrlFetcher() -> @Sendable (ATProtoDID) async throws -> URL {
 		{ try await self.resolvePDS[$0].tryUnwrap }
+	}
+
+	public func profileRecordPDSFetcher()
+		async -> @Sendable (ATProtoDID, URL) async throws -> ATProtoDID.ProfileRecord
+	{
+		{
+			(did, _) in try await self.profileRecord(for: did).tryUnwrap
+		}
 	}
 
 	public func update(
@@ -96,7 +131,7 @@ extension MockATProto: ATProtoInterface {
 		assert(resolvePDS[did] == pdsURL)
 		try pds(for: did).blocks.insert(subjectDID)
 	}
-	
+
 	public func deleteBlockRecord(
 		for myDid: ATProtoDID,
 		subjectDID: ATProtoDID,
@@ -118,6 +153,19 @@ extension MockATProto {
 
 	private func pds(for did: ATProtoDID) throws -> MockPDS {
 		try pdsTable[resolvePDS[did].tryUnwrap].tryUnwrap
+	}
+
+	func profileRecord(for did: ATProtoDID) async -> ATProtoDID
+		.ProfileRecord?
+	{
+		await awaitHold()
+
+		guard let pdsUrl = resolvePDS[did] else {
+			Self.logger.error("missing pdsUrl")
+			return nil
+		}
+
+		return pdsTable[pdsUrl]?.profileRecord
 	}
 
 	//legacy
@@ -142,7 +190,7 @@ extension MockATProto {
 		assert(resolvePDS[did] == pdsUrl)
 		try pds(for: did).legacyKeyPackage = nil
 	}
-	
+
 	public func fetchImage(
 		did: ATProtoDID,
 		cid: ATProtoDID.CID,
@@ -151,7 +199,7 @@ extension MockATProto {
 		assert(resolvePDS[did] == pdsURL)
 		return try pds(for: did).blobs[cid].tryUnwrap
 	}
-	
+
 	public func updateBio(
 		for did: ATProtoDID,
 		newBio: String,
