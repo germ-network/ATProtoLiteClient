@@ -16,6 +16,8 @@ public protocol ATProtoInterface: Sendable {
 		for: String,
 		provider: URLResponseProvider
 	) async throws -> ServerMetadata
+	
+	func pdsUrlFetcher() async -> ((ATProtoDID) async throws -> URL)
 
 	func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,

@@ -8,6 +8,8 @@
 import Foundation
 
 enum ATProtoClientError: Error {
+	case couldntFetchPDS
+	case couldntFormPDSURL
 	case missingLogin
 	case missingOptional(String)
 }
@@ -15,6 +17,8 @@ enum ATProtoClientError: Error {
 extension ATProtoClientError: LocalizedError {
 	var localizedDescription: String {
 		switch self {
+		case .couldntFormPDSURL: "Couldn't form PDS URL"
+		case .couldntFetchPDS: "Couldn't fetch PDS"
 		case .missingLogin: "Missing login"
 		case .missingOptional(let string): "Missing Optional\(string)"
 		}
