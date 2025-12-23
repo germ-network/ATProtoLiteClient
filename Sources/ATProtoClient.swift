@@ -9,6 +9,7 @@ import Foundation
 import OAuthenticator
 
 public struct ATProtoClient: ATProtoInterface {
+	public init() {}
 	public func loadServerMetadata(
 		for host: String,
 		provider: @Sendable (URLRequest) async throws -> (Data, URLResponse)

@@ -9,6 +9,8 @@ import Foundation
 import OAuthenticator
 
 public struct MockATProto: ATProtoInterface {
+	public init() {}
+	
 	public func loadServerMetadata(
 		for host: String,
 		provider: (URLRequest) async throws -> (Data, URLResponse)
