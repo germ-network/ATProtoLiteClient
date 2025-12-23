@@ -249,7 +249,7 @@ extension MockATProto {
 			).archive)
 	}
 
-	private func keyPackage(for did: ATProtoDID) -> AnchorHello? {
+	func keyPackage(for did: ATProtoDID) -> AnchorHello? {
 		guard let pdsUrl = resolvePDS[did] else {
 			Self.logger.error("missing pdsUrl")
 			return nil
