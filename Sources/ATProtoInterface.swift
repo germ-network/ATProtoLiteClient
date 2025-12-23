@@ -50,4 +50,10 @@ public protocol ATProtoInterface: Sendable {
 		pdsURL: URL,
 		authenticator: Authenticator
 	) async throws
+	
+	func fetchImage(
+		did: ATProtoDID,
+		cid: ATProtoDID.CID,
+		pdsURL: URL,
+	) async throws -> Data
 }

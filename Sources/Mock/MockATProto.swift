@@ -138,4 +138,13 @@ extension MockATProto {
 		assert(resolvePDS[did] == pdsUrl)
 		try pds(for: did).legacyKeyPackage = nil
 	}
+	
+	public func fetchImage(
+		did: ATProtoDID,
+		cid: ATProtoDID.CID,
+		pdsURL: URL
+	) async throws -> Data {
+		assert(resolvePDS[did] == pdsURL)
+		return try pds(for: did).blobs[cid].tryUnwrap
+	}
 }
