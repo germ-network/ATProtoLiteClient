@@ -87,4 +87,16 @@ public struct ATProtoClient: ATProtoInterface {
 				authenticator: authenticator
 			)
 	}
+	
+	public func fetchImage(
+		did: ATProtoDID,
+		cid: ATProtoDID.CID,
+		pdsURL: URL
+	) async throws -> Data {
+		try await ATProtoPublicAPI.getBlob(
+			from: did.fullId,
+			cid: cid,
+			pdsURL: pdsURL
+		)
+	}
 }
