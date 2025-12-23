@@ -102,6 +102,38 @@ extension MockATProto: ATProtoInterface {
 		}
 	}
 
+	public func followsFetcher(did: ATProtoDID, pdsUrl: URL) async -> AsyncThrowingStream<
+		[String], any Error
+	> {
+		let (stream, continuation) = AsyncThrowingStream<[String], Error>
+			.makeStream(bufferingPolicy: .unbounded)
+
+		Task {
+			do {
+				continuation.yield(try .init(pds(for: did).follows.map(\.fullId)))
+				continuation.finish()
+			} catch {
+				continuation.finish(throwing: error)
+			}
+		}
+
+		return stream
+	}
+
+	public func anchorIntroductionFetcher() async
+		-> @Sendable (ATProtoDID, URL, AnchorPublicKey) async throws -> AnchorHello.Verified
+		.Archive?
+	{
+		{
+			(did, _, anchorPubKey) in
+			try await self.anchorIntroductionFetcher(
+				did: did,
+				anchorKey: anchorPubKey
+			)
+		}
+
+	}
+
 	public func update(
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
 		for did: ATProtoDID,
@@ -201,6 +233,29 @@ extension MockATProto {
 		}
 
 		return pdsTable[pdsUrl]?.germIdKeyPackage
+	}
+
+	private func anchorIntroductionFetcher(
+		did: ATProtoDID,
+		anchorKey: AnchorPublicKey
+	) throws -> AnchorHello.Verified.Archive? {
+		let hello = try keyPackage(
+			for: did,
+		).tryUnwrap
+		return
+			(try anchorKey.verify(
+				hello: hello,
+				for: .init(anchorTo: did)
+			).archive)
+	}
+
+	private func keyPackage(for did: ATProtoDID) -> AnchorHello? {
+		guard let pdsUrl = resolvePDS[did] else {
+			Self.logger.error("missing pdsUrl")
+			return nil
+		}
+
+		return pdsTable[pdsUrl]?.legacyKeyPackage
 	}
 
 	//legacy
