@@ -8,8 +8,8 @@
 import Foundation
 import OAuthenticator
 
-public enum MockATProto: ATProtoInterface {
-	static func loadServerMetadata(
+public struct MockATProto: ATProtoInterface {
+	public func loadServerMetadata(
 		for host: String,
 		provider: (URLRequest) async throws -> (Data, URLResponse)
 	) throws -> ServerMetadata {

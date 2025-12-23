@@ -19,6 +19,7 @@ public struct ATProtoOAuthenticator: Sendable {
 		pdsURL: URL,
 		dpopSigner: @escaping DPoPSigner.JWTGenerator,
 		loginStorage: LoginStorage,
+		atProtoClient: ATProtoInterface
 	) async throws {
 		let storageCopy = loginStorage
 		signer = dpopSigner
@@ -29,7 +30,8 @@ public struct ATProtoOAuthenticator: Sendable {
 				handleOrDid: handleOrDid,
 				pdsURL: pdsURL,
 				jwtGenerator: signer,
-				loginStorage: storageCopy
+				loginStorage: storageCopy,
+				atProtoClient: atProtoClient
 			)
 	}
 
@@ -38,6 +40,7 @@ public struct ATProtoOAuthenticator: Sendable {
 		pdsURL: URL,
 		jwtGenerator: @escaping DPoPSigner.JWTGenerator,
 		loginStorage: LoginStorage,
+		atProtoClient: ATProtoInterface,
 	) async throws -> Authenticator {
 		let responseProvider = URLSession.defaultProvider
 		let clientMetadataEndpoint = ATProtoConstants.OAuth.clientId
@@ -53,12 +56,12 @@ public struct ATProtoOAuthenticator: Sendable {
 		// TODO: GER-753 - Figure out PDS vs. server metadata host
 		let serverConfig =
 			if serverHost.hasSuffix("host.bsky.network") {
-				try await ServerMetadata.load(
+				try await atProtoClient.loadServerMetadata(
 					for: ATProtoConstants.OAuth.baseHost,
 					provider: responseProvider
 				)
 			} else {
-				try await ServerMetadata.load(
+				try await atProtoClient.loadServerMetadata(
 					for: serverHost,
 					provider: responseProvider
 				)
