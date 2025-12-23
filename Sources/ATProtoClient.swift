@@ -58,4 +58,18 @@ public struct ATProtoClient: ATProtoInterface {
 			authenticator: authenticator
 		)
 	}
+
+	public func createBlockRecord(
+		for myDid: ATProtoDID,
+		subjectDID: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws {
+		try await ATProtoAuthAPI.createBlockRecord(
+			for: myDid.fullId,
+			subjectDID: subjectDID.fullId,
+			pdsURL: pdsURL,
+			authenticator: authenticator
+		)
+	}
 }

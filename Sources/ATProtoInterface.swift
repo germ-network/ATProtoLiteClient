@@ -36,4 +36,11 @@ public protocol ATProtoInterface: Sendable {
 		pdsURL: URL,
 		authenticator: Authenticator,
 	) async throws
+
+	func createBlockRecord(
+		for did: ATProtoDID,
+		subjectDID: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws
 }
