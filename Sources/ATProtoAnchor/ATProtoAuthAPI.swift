@@ -24,6 +24,8 @@ public enum ATProtoAuthAPI {
 		let newProfileRecord = AppBskyLexiconLite.ProfileRecord.init(
 			displayName: profileRecord.displayName,
 			description: newBio,
+			pronouns: profileRecord.pronouns,
+			websiteURL: profileRecord.websiteURL,
 			avatarBlob: profileRecord.avatarBlob,
 			bannerBlob: profileRecord.bannerBlob,
 			labels: profileRecord.labels,

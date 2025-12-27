@@ -38,6 +38,14 @@ extension AppBskyLexiconLite {
 		/// description text."
 		public let description: String?
 
+		/// The user account's pronoun preferences. Optional.
+		///
+		/// - Note: According to the AT Protocol specifications: "Free-form pronouns text."
+		public let pronouns: String?
+
+		/// The user account's website. Optional.
+		public let websiteURL: URL?
+
 		/// The avatar image URL of the profile. Optional.
 		///
 		/// - Note: Only JPEGs and PNGs are accepted.
@@ -74,7 +82,10 @@ extension AppBskyLexiconLite {
 		public let createdAt: Date?
 
 		public init(
-			displayName: String? = nil, description: String? = nil,
+			displayName: String? = nil,
+			description: String? = nil,
+			pronouns: String? = nil,
+			websiteURL: URL? = nil,
 			avatarBlob: ComAtprotoLexiconLite.UploadBlobOutput? = nil,
 			bannerBlob: ComAtprotoLexiconLite.UploadBlobOutput? = nil,
 			labels: ComAtprotoLexiconLite.SelfLabelsDefinition? = nil,
@@ -84,6 +95,8 @@ extension AppBskyLexiconLite {
 		) {
 			self.displayName = displayName
 			self.description = description
+			self.pronouns = pronouns
+			self.websiteURL = websiteURL
 			self.avatarBlob = avatarBlob
 			self.bannerBlob = bannerBlob
 			self.labels = labels
@@ -101,6 +114,8 @@ extension AppBskyLexiconLite.ProfileRecord: Codable {
 
 		self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
 		self.description = try container.decodeIfPresent(String.self, forKey: .description)
+		self.pronouns = try container.decodeIfPresent(String.self, forKey: .pronouns)
+		self.websiteURL = try container.decodeIfPresent(URL.self, forKey: .websiteURL)
 		self.avatarBlob = try container.decodeIfPresent(
 			ComAtprotoLexiconLite.UploadBlobOutput.self, forKey: .avatarBlob)
 		self.bannerBlob = try container.decodeIfPresent(
@@ -119,6 +134,8 @@ extension AppBskyLexiconLite.ProfileRecord: Codable {
 
 		try container.encodeIfPresent(self.displayName, forKey: .displayName)
 		try container.encodeIfPresent(self.description, forKey: .description)
+		try container.encodeIfPresent(self.pronouns, forKey: .pronouns)
+		try container.encodeIfPresent(self.websiteURL, forKey: .websiteURL)
 		try container.encodeIfPresent(self.avatarBlob, forKey: .avatarBlob)
 		try container.encodeIfPresent(self.bannerBlob, forKey: .bannerBlob)
 		try container.encodeIfPresent(self.labels, forKey: .labels)
@@ -132,6 +149,8 @@ extension AppBskyLexiconLite.ProfileRecord: Codable {
 		case type = "$type"
 		case displayName
 		case description
+		case pronouns
+		case websiteURL = "website"
 		case avatarBlob = "avatar"
 		case bannerBlob = "banner"
 		case labels
