@@ -159,6 +159,18 @@ public struct ATProtoClient: ATProtoInterface {
 		)
 	}
 
+	public func deleteDelegateRecord(
+		for did: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws {
+		try await ATProtoAuthAPI.deleteDelegateRecord(
+			for: did.fullId,
+			pdsURL: pdsURL,
+			authenticator: authenticator
+		)
+	}
+
 	public func createBlockRecord(
 		for myDid: ATProtoDID,
 		subjectDID: ATProtoDID,
