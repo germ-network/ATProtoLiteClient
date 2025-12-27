@@ -59,7 +59,7 @@ public enum ATProtoAuthAPI {
 			authenticator: authenticator
 		)
 	}
-	
+
 	public static func deleteDelegateRecord(
 		for did: String,
 		pdsURL: URL,
