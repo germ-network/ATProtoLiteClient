@@ -59,6 +59,20 @@ public enum ATProtoAuthAPI {
 			authenticator: authenticator
 		)
 	}
+	
+	public static func deleteDelegateRecord(
+		for did: String,
+		pdsURL: URL,
+		authenticator: Authenticator,
+	) async throws {
+		try await ATProtoKitLite.deleteRecord(
+			repository: did,
+			collection: "com.germnetwork.declaration",
+			recordKey: "self",
+			pdsURL: pdsURL,
+			authenticator: authenticator
+		)
+	}
 
 	public static func updateKeyPackage(
 		for did: String,
