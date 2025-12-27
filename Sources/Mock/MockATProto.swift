@@ -168,6 +168,17 @@ extension MockATProto: ATProtoInterface {
 		)
 	}
 
+	public func deleteDelegateRecord(
+		for did: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws {
+		try deleteDelegateRecord(
+			for: did,
+			pdsUrl: pdsURL,
+		)
+	}
+
 	public func updateKeyPackage(
 		for did: ATProtoDID,
 		newHello: AnchorHello,
@@ -301,6 +312,16 @@ extension MockATProto {
 		//TODO, mock authenticator behavior
 		assert(resolvePDS[did] == pdsUrl)
 		try pds(for: did).legacyKeyPackage = nil
+	}
+
+	func deleteDelegateRecord(
+		for did: ATProtoDID,
+		pdsUrl: URL,
+		//		authenticatorInput: Authenticator.Input,
+	) throws {
+		//TODO, mock authenticator behavior
+		assert(resolvePDS[did] == pdsUrl)
+		try pds(for: did).germIdKeyPackage = nil
 	}
 
 	public func fetchImage(
