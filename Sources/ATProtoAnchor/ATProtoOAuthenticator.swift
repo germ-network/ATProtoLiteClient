@@ -12,13 +12,14 @@ import OAuthenticator
 //store the loginstore and DPoPKey that (O)Authenticator needs
 public struct ATProtoOAuthenticator: Sendable {
 	public let signer: DPoPSigner.JWTGenerator
-	public let authenticator: Authenticator
+	private let authenticator: Authenticator
 
 	public init(
 		handleOrDid: String?,
 		pdsURL: URL,
 		dpopSigner: @escaping DPoPSigner.JWTGenerator,
 		loginStorage: LoginStorage,
+		atProtoClient: ATProtoInterface
 	) async throws {
 		let storageCopy = loginStorage
 		signer = dpopSigner
@@ -29,7 +30,8 @@ public struct ATProtoOAuthenticator: Sendable {
 				handleOrDid: handleOrDid,
 				pdsURL: pdsURL,
 				jwtGenerator: signer,
-				loginStorage: storageCopy
+				loginStorage: storageCopy,
+				atProtoClient: atProtoClient
 			)
 	}
 
@@ -38,19 +40,24 @@ public struct ATProtoOAuthenticator: Sendable {
 		pdsURL: URL,
 		jwtGenerator: @escaping DPoPSigner.JWTGenerator,
 		loginStorage: LoginStorage,
+		atProtoClient: ATProtoInterface,
 	) async throws -> Authenticator {
 		let responseProvider = URLSession.defaultProvider
 		let clientMetadataEndpoint = ATProtoConstants.OAuth.clientId
 
-		let clientConfig = try await ClientMetadata.load(
-			for: clientMetadataEndpoint, provider: responseProvider)
+		let clientConfig = try await atProtoClient.loadClientMetadata(
+			for: clientMetadataEndpoint,
+			provider: responseProvider
+		)
 
 		guard let pdsHost = pdsURL.host() else {
 			throw ATProtoAPIError.badUrl
 		}
 
-		let pdsMetadata = try await ProtectedResourceMetadata.load(
-			for: pdsHost, provider: responseProvider)
+		let pdsMetadata = try await atProtoClient.loadProtectedResourceMetadata(
+			for: pdsHost,
+			provider: responseProvider
+		)
 
 		//https://datatracker.ietf.org/doc/html/rfc7518#section-3.1
 		guard let supportedAlgs = pdsMetadata.dpopSigningAlgValuesSupported,
@@ -66,7 +73,7 @@ public struct ATProtoOAuthenticator: Sendable {
 			throw ATProtoAPIError.badUrl
 		}
 
-		let serverConfig = try await ServerMetadata.load(
+		let serverConfig = try await atProtoClient.loadServerMetadata(
 			for: authorizationServerHost,
 			provider: responseProvider
 		)
@@ -84,6 +91,14 @@ public struct ATProtoOAuthenticator: Sendable {
 		)
 
 		return Authenticator(config: config)
+	}
+}
+
+// Authentication - capture initial authentication and pass-through to
+// authenticate
+extension ATProtoOAuthenticator {
+	public func authenticate() async throws {
+		try await authenticator.authenticate()
 	}
 }
 
