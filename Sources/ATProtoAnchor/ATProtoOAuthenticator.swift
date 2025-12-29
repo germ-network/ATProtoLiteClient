@@ -60,10 +60,8 @@ public struct ATProtoOAuthenticator: Sendable {
 		}
 
 		guard
-			let authorizationServers = pdsMetadata.authorizationServers,
-			let authorizationServerUrl = authorizationServers.first,
-			let authorizationServer = URL(string: authorizationServerUrl),
-			let authorizationServerHost = authorizationServer.host()
+			let authorizationServerUrl = pdsMetadata.authorizationServers?.first,
+			let authorizationServerHost = URL(string: authorizationServerUrl)?.host()
 		else {
 			throw ATProtoAPIError.badUrl
 		}
