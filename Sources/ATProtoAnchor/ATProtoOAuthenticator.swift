@@ -60,10 +60,12 @@ public struct ATProtoOAuthenticator: Sendable {
 		)
 
 		//https://datatracker.ietf.org/doc/html/rfc7518#section-3.1
-		guard let supportedAlgs = pdsMetadata.dpopSigningAlgValuesSupported,
-			supportedAlgs.contains("ES256")
-		else {
-			throw ATProtoAPIError.notImplemented
+		//PDS doesn't actually fill this field, so we only check it if present
+		if let supportedAlgs = pdsMetadata.dpopSigningAlgValuesSupported {
+			guard supportedAlgs.contains("ES256")
+			else {
+				throw ATProtoAPIError.notImplemented
+			}
 		}
 
 		guard
