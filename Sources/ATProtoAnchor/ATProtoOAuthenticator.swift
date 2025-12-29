@@ -45,24 +45,31 @@ public struct ATProtoOAuthenticator: Sendable {
 		let clientConfig = try await ClientMetadata.load(
 			for: clientMetadataEndpoint, provider: responseProvider)
 
-		guard let serverHost = pdsURL.host() else {
+		guard let pdsHost = pdsURL.host() else {
 			throw ATProtoAPIError.badUrl
 		}
 
-		// Switch to bsky.social for server host
-		// TODO: GER-753 - Figure out PDS vs. server metadata host
-		let serverConfig =
-			if serverHost.hasSuffix("host.bsky.network") {
-				try await ServerMetadata.load(
-					for: ATProtoConstants.OAuth.baseHost,
-					provider: responseProvider
-				)
-			} else {
-				try await ServerMetadata.load(
-					for: serverHost,
-					provider: responseProvider
-				)
-			}
+		let pdsMetadata = try await ProtectedResourceMetadata.load(
+			for: pdsHost, provider: responseProvider)
+
+		//https://datatracker.ietf.org/doc/html/rfc7518#section-3.1
+		guard let supportedAlgs = pdsMetadata.dpopSigningAlgValuesSupported,
+			supportedAlgs.contains("ES256")
+		else {
+			throw ATProtoAPIError.notImplemented
+		}
+
+		guard
+			let authorizationServerUrl = pdsMetadata.authorizationServers?.first,
+			let authorizationServerHost = URL(string: authorizationServerUrl)?.host()
+		else {
+			throw ATProtoAPIError.badUrl
+		}
+
+		let serverConfig = try await ServerMetadata.load(
+			for: authorizationServerHost,
+			provider: responseProvider
+		)
 
 		let tokenHandling = Bluesky.tokenHandling(
 			account: handleOrDid,

@@ -86,7 +86,8 @@ struct LoginView: View {
 				let _ = try await authenticatingTask.value
 				self.authenticatingTask = nil
 			} catch {
-				Self.logger.logError(error, context: "authenticating")
+				Self.logger.error(
+					"Error: authenticating \(error.localizedDescription)")
 				self.authenticatingTask = nil
 			}
 		}

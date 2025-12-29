@@ -216,7 +216,8 @@ struct CachedAuthenticatedView: View {
 				state =
 					.login(result, inMemoryStore[result.did, default: .init()])
 			} catch {
-				Self.logger.logError(error, context: "checking handle")
+				Self.logger.error(
+					"Error: checking handle \(error.localizedDescription)")
 				state = .entry(error)
 			}
 		}
