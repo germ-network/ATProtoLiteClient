@@ -57,6 +57,12 @@ public protocol ATProtoInterface: Sendable {
 		authenticator: Authenticator,
 	) async throws
 
+	func deleteDelegateRecord(
+		for: ATProtoDID,
+		pdsURL: URL,
+		authenticator: Authenticator,
+	) async throws
+
 	func createBlockRecord(
 		for: ATProtoDID,
 		subjectDID: ATProtoDID,
