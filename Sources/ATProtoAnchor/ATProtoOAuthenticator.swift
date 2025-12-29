@@ -54,8 +54,10 @@ public struct ATProtoOAuthenticator: Sendable {
 			throw ATProtoAPIError.badUrl
 		}
 
-		let pdsMetadata = try await ProtectedResourceMetadata.load(
-			for: pdsHost, provider: responseProvider)
+		let pdsMetadata = try await atProtoClient.loadProtectedResourceMetadata(
+			for: pdsHost,
+			provider: responseProvider
+		)
 
 		//https://datatracker.ietf.org/doc/html/rfc7518#section-3.1
 		guard let supportedAlgs = pdsMetadata.dpopSigningAlgValuesSupported,

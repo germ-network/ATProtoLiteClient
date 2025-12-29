@@ -12,6 +12,13 @@ import OAuthenticator
 public struct ATProtoClient: ATProtoInterface {
 	public init() {}
 
+	public func loadProtectedResourceMetadata(
+		for host: String,
+		provider: @Sendable (URLRequest) async throws -> (Data, URLResponse)
+	) async throws -> ProtectedResourceMetadata {
+		try await .load(for: host, provider: provider)
+	}
+
 	public func loadServerMetadata(
 		for host: String,
 		provider: @Sendable (URLRequest) async throws -> (Data, URLResponse)

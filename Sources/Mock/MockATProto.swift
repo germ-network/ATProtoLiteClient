@@ -62,6 +62,18 @@ extension MockATProto {
 }
 
 extension MockATProto: ATProtoInterface {
+	public func loadProtectedResourceMetadata(
+		for: String, provider: @Sendable (URLRequest) async throws -> (Data, URLResponse)
+	) async throws -> OAuthenticator.ProtectedResourceMetadata {
+		try JSONDecoder().decode(
+			ProtectedResourceMetadata.self,
+			from:
+				"""
+				{"resource":"https://blacksky.app","authorization_servers":["https://blacksky.app"],"scopes_supported":[],"bearer_methods_supported":["header"],"resource_documentation":"https://atproto.com"}
+				""".utf8Data
+		)
+	}
+
 	public func loadServerMetadata(
 		for host: String,
 		provider: (URLRequest) async throws -> (Data, URLResponse)

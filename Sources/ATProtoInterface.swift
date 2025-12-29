@@ -12,6 +12,11 @@ import OAuthenticator
 //lets us stub out online interfaces related to ATProto
 //for local testing
 public protocol ATProtoInterface: Sendable {
+	func loadProtectedResourceMetadata(
+		for: String,
+		provider: URLResponseProvider
+	) async throws -> ProtectedResourceMetadata
+
 	func loadServerMetadata(
 		for: String,
 		provider: URLResponseProvider
