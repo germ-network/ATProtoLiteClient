@@ -1,5 +1,5 @@
 {
-  "originHash" : "7dda97648d2a7187972b805324930e4cd40fa41f1a2e3b0eca9c7727278ac985",
+  "originHash" : "3fb2398d4fd949ccfbfda2abf94e751793d6edb8db8ce16f13fae733522b1252",
   "pins" : [
     {
       "identity" : "atresolve",
@@ -7,7 +7,7 @@
       "location" : "https://github.com/germ-network/ATResolve",
       "state" : {
         "revision" : "6b69a7bd310fd8a4b1a2281d6d8665ebe889b6bc",
-        "version" : "1.1.3"
+        "version" : "1.0.0-germ.1"
       }
     },
     {
