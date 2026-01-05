@@ -1,5 +1,5 @@
 {
-  "originHash" : "3821487121c33f24ef41d207d4af99389ba228e7e08a922eaa01120aa566ce82",
+  "originHash" : "7dda97648d2a7187972b805324930e4cd40fa41f1a2e3b0eca9c7727278ac985",
   "pins" : [
     {
       "identity" : "atresolve",
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/germ-network/OAuthenticator",
       "state" : {
-        "revision" : "2e3936413622bf16a83928b91aaf8ae4ace769f9",
-        "version" : "0.7.1-germ.1"
+        "revision" : "df1809d2f0e50a69082c9e00e4225e15db8a68e1",
+        "version" : "0.7.1-germ.2"
       }
     },
     {
