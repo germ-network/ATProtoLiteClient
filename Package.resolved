@@ -1,13 +1,13 @@
 {
-  "originHash" : "b4f6376052cf20e5e8ed1b5fafec5aa81d3237332c0105cc2e4a94d38c116c91",
+  "originHash" : "3fb2398d4fd949ccfbfda2abf94e751793d6edb8db8ce16f13fae733522b1252",
   "pins" : [
     {
       "identity" : "atresolve",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/germ-network/ATResolve",
       "state" : {
-        "revision" : "b446aeed42ac45642bdd88f6a0af7b6c253ac23d",
-        "version" : "1.1.1"
+        "revision" : "6b69a7bd310fd8a4b1a2281d6d8665ebe889b6bc",
+        "version" : "1.0.0-germ.1"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/germ-network/OAuthenticator",
       "state" : {
-        "revision" : "f84abe79fe1f0138fa62c1af3c1a5ebd4b2ae419",
-        "version" : "0.7.1"
+        "revision" : "df1809d2f0e50a69082c9e00e4225e15db8a68e1",
+        "version" : "0.7.1-germ.2"
       }
     },
     {

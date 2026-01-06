@@ -19,11 +19,11 @@ let package = Package(
 		),
 		.package(
 			url: "https://github.com/germ-network/OAuthenticator",
-			from: "0.7.1"
+			exact: "0.7.1-germ.2"
 		),
 		.package(
 			url: "https://github.com/germ-network/ATResolve",
-			from: "1.1.1"
+			exact: "1.0.0-germ.1"
 		),
 		.package(url: "https://github.com/vapor/jwt-kit.git", from: "5.0.0"),
 	],
