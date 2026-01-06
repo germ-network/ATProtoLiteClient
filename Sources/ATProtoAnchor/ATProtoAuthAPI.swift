@@ -135,6 +135,10 @@ public enum ATProtoAuthAPI {
 		pdsURL: URL,
 		authenticator: Authenticator
 	) async throws {
+		await ATRecordTypeRegistryLite.shared.register(
+			types: [AppBskyLexiconLite.BlockRecord.self]
+		)
+
 		// TODO: We could make this faster if we store the block record key
 		var cursor: String? = nil
 		var fetchCount = 0
