@@ -1,13 +1,13 @@
 {
-  "originHash" : "3fb2398d4fd949ccfbfda2abf94e751793d6edb8db8ce16f13fae733522b1252",
+  "originHash" : "f5bda25e9c7e46eafd8c88707875daf3df656af23c9f189efa801d252aeee30f",
   "pins" : [
     {
       "identity" : "atresolve",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/germ-network/ATResolve",
       "state" : {
-        "revision" : "6b69a7bd310fd8a4b1a2281d6d8665ebe889b6bc",
-        "version" : "1.0.0-germ.1"
+        "revision" : "26459d9d6e7deb27066b9d7d2931279acc107138",
+        "version" : "1.0.0-germ.2"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-certificates.git",
       "state" : {
-        "revision" : "133a347911b6ad0fc8fe3bf46ca90c66cff97130",
-        "version" : "1.17.0"
+        "revision" : "7d5f6124c91a2d06fb63a811695a3400d15a100e",
+        "version" : "1.17.1"
       }
     },
     {
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "revision" : "bc386b95f2a16ccd0150a8235e7c69eab2b866ca",
-        "version" : "1.8.0"
+        "revision" : "7ee16e465622412764b0ff0c1301801dc71b8f61",
+        "version" : "1.9.0"
       }
     }
   ],
