@@ -23,9 +23,12 @@ public enum ATProtoAPIError: Error, Equatable, LocalizedError {
 	case badRequest
 	case badResponse(error: String?, message: String?, statusCode: Int?)
 	case badUrl
+	case expiredToken
 	case failedToEncode
 	case failedToDecodeJson
 	case failedToDecodeRecord
+	case invalidRequest
+	case invalidToken
 	case recordNotFound
 	case notImplemented
 	case unexpectedRecordType
@@ -36,28 +39,15 @@ public enum ATProtoAPIError: Error, Equatable, LocalizedError {
 		case .badRequest: "Bad request"
 		case .badResponse: "Bad response"
 		case .badUrl: "Bad URL"
+		case .expiredToken: "Expired token"
 		case .failedToEncode: "Failed to encode"
 		case .failedToDecodeJson: "Failed to decode JSON"
 		case .failedToDecodeRecord: "Failed to decode record"
+		case .invalidRequest: "Invalid request"
+		case .invalidToken: "Invalid token"
 		case .recordNotFound: "Record not found"
 		case .notImplemented: "Not implemented"
 		case .unexpectedRecordType: "Unexpected type for record"
-		}
-	}
-}
-
-public enum ATProtoSessionError: Error, Equatable, LocalizedError {
-	case invalidRequest
-	case expiredToken
-	case invalidToken
-	case accountTakedown
-
-	public var errorDescription: String? {
-		switch self {
-		case .invalidRequest: "Invalid request"
-		case .expiredToken: "Expired token"
-		case .invalidToken: "Invalid token"
-		case .accountTakedown: "Account takedown"
 		}
 	}
 }
@@ -80,13 +70,11 @@ public enum ATProtoAPIErrorHandling {
 				case "RecordNotFound":
 					throw ATProtoAPIError.recordNotFound
 				case "InvalidRequest":
-					throw ATProtoSessionError.invalidRequest
+					throw ATProtoAPIError.invalidRequest
 				case "ExpiredToken":
-					throw ATProtoSessionError.expiredToken
+					throw ATProtoAPIError.expiredToken
 				case "InvalidToken":
-					throw ATProtoSessionError.invalidToken
-				case "AccountTakedown":
-					throw ATProtoSessionError.accountTakedown
+					throw ATProtoAPIError.invalidToken
 				default:
 					throw ATProtoAPIError.badResponse(
 						error: errorResponse.error,
