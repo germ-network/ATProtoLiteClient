@@ -225,3 +225,16 @@ extension ATProtoAuthAPI {
 		return isBlocked
 	}
 }
+
+// Refresh OAuth tokens
+extension ATProtoAuthAPI {
+	public static func refresh(
+		pdsURL: URL,
+		authenticator: Authenticator
+	) async throws -> ComAtprotoLexiconLite.RefreshSessionOutput {
+		try await ATProtoKitLite.refreshSession(
+			pdsURL: pdsURL,
+			authenticator: authenticator
+		)
+	}
+}

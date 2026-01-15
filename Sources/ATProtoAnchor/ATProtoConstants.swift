@@ -18,7 +18,7 @@ struct ATProtoConstants {
 	static let maxFetches = 2 * Int(pow(Double(10), Double(9)))
 }
 
-public enum ATProtoAPIError: Error, Equatable {
+public enum ATProtoAPIError: Error, Equatable, LocalizedError {
 	case badHandle
 	case badRequest
 	case badResponse(error: String?, message: String?, statusCode: Int?)
@@ -29,9 +29,7 @@ public enum ATProtoAPIError: Error, Equatable {
 	case recordNotFound
 	case notImplemented
 	case unexpectedRecordType
-}
 
-extension ATProtoAPIError: LocalizedError {
 	public var errorDescription: String? {
 		switch self {
 		case .badHandle: "Bad handle"
@@ -44,6 +42,22 @@ extension ATProtoAPIError: LocalizedError {
 		case .recordNotFound: "Record not found"
 		case .notImplemented: "Not implemented"
 		case .unexpectedRecordType: "Unexpected type for record"
+		}
+	}
+}
+
+public enum ATProtoSessionError: Error, Equatable, LocalizedError {
+	case invalidRequest
+	case expiredToken
+	case invalidToken
+	case accountTakedown
+
+	public var errorDescription: String? {
+		switch self {
+		case .invalidRequest: "Invalid request"
+		case .expiredToken: "Expired token"
+		case .invalidToken: "Invalid token"
+		case .accountTakedown: "Account takedown"
 		}
 	}
 }
@@ -62,14 +76,24 @@ public enum ATProtoAPIErrorHandling {
 				ATProtoAPIErrorHandling.HTTPResponse.self,
 				from: data
 			) {
-				if errorResponse.error == "RecordNotFound" {
+				switch errorResponse.error {
+				case "RecordNotFound":
 					throw ATProtoAPIError.recordNotFound
+				case "InvalidRequest":
+					throw ATProtoSessionError.invalidRequest
+				case "ExpiredToken":
+					throw ATProtoSessionError.expiredToken
+				case "InvalidToken":
+					throw ATProtoSessionError.invalidToken
+				case "AccountTakedown":
+					throw ATProtoSessionError.accountTakedown
+				default:
+					throw ATProtoAPIError.badResponse(
+						error: errorResponse.error,
+						message: errorResponse.message,
+						statusCode: httpResponse?.statusCode
+					)
 				}
-				throw ATProtoAPIError.badResponse(
-					error: errorResponse.error,
-					message: errorResponse.message,
-					statusCode: httpResponse?.statusCode
-				)
 			}
 			throw ATProtoAPIError.badResponse(
 				error: nil,
