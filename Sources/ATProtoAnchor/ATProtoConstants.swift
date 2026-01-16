@@ -18,29 +18,33 @@ struct ATProtoConstants {
 	static let maxFetches = 2 * Int(pow(Double(10), Double(9)))
 }
 
-public enum ATProtoAPIError: Error, Equatable {
+public enum ATProtoAPIError: Error, Equatable, LocalizedError {
 	case badHandle
 	case badRequest
 	case badResponse(error: String?, message: String?, statusCode: Int?)
 	case badUrl
+	case expiredToken
 	case failedToEncode
 	case failedToDecodeJson
 	case failedToDecodeRecord
+	case invalidRequest
+	case invalidToken
 	case recordNotFound
 	case notImplemented
 	case unexpectedRecordType
-}
 
-extension ATProtoAPIError: LocalizedError {
 	public var errorDescription: String? {
 		switch self {
 		case .badHandle: "Bad handle"
 		case .badRequest: "Bad request"
 		case .badResponse: "Bad response"
 		case .badUrl: "Bad URL"
+		case .expiredToken: "Expired token"
 		case .failedToEncode: "Failed to encode"
 		case .failedToDecodeJson: "Failed to decode JSON"
 		case .failedToDecodeRecord: "Failed to decode record"
+		case .invalidRequest: "Invalid request"
+		case .invalidToken: "Invalid token"
 		case .recordNotFound: "Record not found"
 		case .notImplemented: "Not implemented"
 		case .unexpectedRecordType: "Unexpected type for record"
@@ -62,14 +66,22 @@ public enum ATProtoAPIErrorHandling {
 				ATProtoAPIErrorHandling.HTTPResponse.self,
 				from: data
 			) {
-				if errorResponse.error == "RecordNotFound" {
+				switch errorResponse.error {
+				case "RecordNotFound":
 					throw ATProtoAPIError.recordNotFound
+				case "InvalidRequest":
+					throw ATProtoAPIError.invalidRequest
+				case "ExpiredToken":
+					throw ATProtoAPIError.expiredToken
+				case "InvalidToken":
+					throw ATProtoAPIError.invalidToken
+				default:
+					throw ATProtoAPIError.badResponse(
+						error: errorResponse.error,
+						message: errorResponse.message,
+						statusCode: httpResponse?.statusCode
+					)
 				}
-				throw ATProtoAPIError.badResponse(
-					error: errorResponse.error,
-					message: errorResponse.message,
-					statusCode: httpResponse?.statusCode
-				)
 			}
 			throw ATProtoAPIError.badResponse(
 				error: nil,

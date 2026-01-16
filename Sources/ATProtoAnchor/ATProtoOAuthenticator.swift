@@ -99,7 +99,8 @@ public struct ATProtoOAuthenticator: Sendable {
 // Authentication - capture initial authentication and pass-through to
 // authenticate
 extension ATProtoOAuthenticator {
-	public func authenticate() async throws {
+	@discardableResult
+	public func authenticate() async throws -> Login {
 		try await authenticator.authenticate()
 	}
 }
