@@ -19,8 +19,7 @@ let package = Package(
 		),
 		.package(
 			url: "https://github.com/germ-network/OAuthenticator",
-			branch: "anna/return-sub"
-//			exact: "0.7.1-germ.2"
+			exact: "0.7.1-germ.3"
 		),
 		.package(
 			url: "https://github.com/germ-network/ATResolve",
