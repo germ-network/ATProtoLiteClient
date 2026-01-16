@@ -20,7 +20,7 @@ concurrency:
 jobs:
   test:
     name: Test MacOS
-    runs-on: macOS-26-arm64
+    runs-on: macOS-15-arm64
     timeout-minutes: 30
     env:
       DEVELOPER_DIR: /Applications/Xcode_26.2.app
