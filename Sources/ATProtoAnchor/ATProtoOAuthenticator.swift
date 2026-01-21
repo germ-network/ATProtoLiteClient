@@ -83,7 +83,15 @@ public struct ATProtoOAuthenticator: Sendable {
 		let tokenHandling = Bluesky.tokenHandling(
 			account: handleOrDid,
 			server: serverConfig,
-			jwtGenerator: jwtGenerator
+			jwtGenerator: jwtGenerator,
+			validator: { tokenResponse, sub in
+				// TODO: GER-1343 - Implement validator
+				// after a token is issued, it is critical that the returned
+				// identity be resolved and its PDS match the issuing server
+				//
+				// check out draft-ietf-oauth-v2-1 section 7.3.1 for details
+				return true
+			}
 		)
 
 		let config = Authenticator.Configuration(
