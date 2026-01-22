@@ -97,7 +97,8 @@ public struct ATProtoOAuthenticator: Sendable {
 		let config = Authenticator.Configuration(
 			appCredentials: clientConfig.credentials,
 			loginStorage: loginStorage,
-			tokenHandling: tokenHandling
+			tokenHandling: tokenHandling,
+			mode: .manualOnly
 		)
 
 		return Authenticator(config: config)
