@@ -1,5 +1,5 @@
 {
-  "originHash" : "076aef6141d55d52372acd7d72945dd959dd2c35d5a04d3c1d11e7a413a62841",
+  "originHash" : "6a3a0a466b47fdee2328ec85b0494c50e366e42ec42714e94e1fd6c28e926ca8",
   "pins" : [
     {
       "identity" : "atresolve",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/germ-network/autonomous-comm-protocol.git",
       "state" : {
-        "revision" : "f939a2ff62b065dfd792dc9f11b75f2ddfa4adf1",
-        "version" : "1.1.9"
+        "revision" : "295a73d20310c82ca84e46c4dde8af1d49b5a3d8",
+        "version" : "1.1.10"
       }
     },
     {

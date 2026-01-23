@@ -15,7 +15,7 @@ let package = Package(
 	dependencies: [
 		.package(
 			url: "https://github.com/germ-network/autonomous-comm-protocol.git",
-			from: "1.1.4"
+			from: "1.1.10"
 		),
 		.package(
 			url: "https://github.com/germ-network/OAuthenticator",
