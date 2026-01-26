@@ -19,7 +19,8 @@ public struct ATProtoOAuthenticator: Sendable {
 		pdsURL: URL,
 		dpopSigner: @escaping DPoPSigner.JWTGenerator,
 		loginStorage: LoginStorage,
-		atProtoClient: ATProtoInterface
+		atProtoClient: ATProtoInterface,
+		loginMode: Authenticator.UserAuthenticationMode = .automatic
 	) async throws {
 		let storageCopy = loginStorage
 		signer = dpopSigner
@@ -31,7 +32,8 @@ public struct ATProtoOAuthenticator: Sendable {
 				pdsURL: pdsURL,
 				jwtGenerator: signer,
 				loginStorage: storageCopy,
-				atProtoClient: atProtoClient
+				atProtoClient: atProtoClient,
+				loginMode: loginMode
 			)
 	}
 
@@ -41,6 +43,7 @@ public struct ATProtoOAuthenticator: Sendable {
 		jwtGenerator: @escaping DPoPSigner.JWTGenerator,
 		loginStorage: LoginStorage,
 		atProtoClient: ATProtoInterface,
+		loginMode: Authenticator.UserAuthenticationMode = .automatic
 	) async throws -> Authenticator {
 		let responseProvider = URLSession.defaultProvider
 		let clientMetadataEndpoint = ATProtoConstants.OAuth.clientId
@@ -98,7 +101,7 @@ public struct ATProtoOAuthenticator: Sendable {
 			appCredentials: clientConfig.credentials,
 			loginStorage: loginStorage,
 			tokenHandling: tokenHandling,
-			mode: .manualOnly
+			mode: loginMode
 		)
 
 		return Authenticator(config: config)
