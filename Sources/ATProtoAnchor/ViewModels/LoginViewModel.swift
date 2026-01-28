@@ -29,7 +29,7 @@ import os
 	let oauthStorage: OAuthStorage
 
 	//authenticator object generated from the loginCredential
-	public var _authenticator: ATProtoOAuthenticator? = nil
+	public var _authenticator: Authenticator? = nil
 
 	static public func create(
 		handle: String,
@@ -65,12 +65,12 @@ import os
 	//lazily get
 	public func getAuthenticator(
 		pdsURL: URL
-	) async throws -> ATProtoOAuthenticator {
+	) async throws -> Authenticator {
 		if let _authenticator { return _authenticator }
-		let newAuthenticator = try await ATProtoOAuthenticator(
+		let newAuthenticator = try await ATProtoOAuthenticator.create(
 			handleOrDid: handle,
 			pdsURL: pdsURL,
-			dpopSigner: oauthStorage.dPoPSigner,
+			jwtGenerator: oauthStorage.dPoPSigner,
 			loginStorage: oauthStorage.loginStorage,
 			atProtoClient: ATProtoClient()
 		)
