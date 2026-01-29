@@ -19,7 +19,8 @@ public struct ATProtoOAuthenticator: Sendable {
 		pdsURL: URL,
 		dpopSigner: @escaping DPoPSigner.JWTGenerator,
 		loginStorage: LoginStorage,
-		atProtoClient: ATProtoInterface
+		atProtoClient: ATProtoInterface,
+		loginMode: Authenticator.UserAuthenticationMode = .automatic
 	) async throws {
 		let storageCopy = loginStorage
 		signer = dpopSigner
@@ -31,7 +32,8 @@ public struct ATProtoOAuthenticator: Sendable {
 				pdsURL: pdsURL,
 				jwtGenerator: signer,
 				loginStorage: storageCopy,
-				atProtoClient: atProtoClient
+				atProtoClient: atProtoClient,
+				loginMode: loginMode
 			)
 	}
 
@@ -41,6 +43,7 @@ public struct ATProtoOAuthenticator: Sendable {
 		jwtGenerator: @escaping DPoPSigner.JWTGenerator,
 		loginStorage: LoginStorage,
 		atProtoClient: ATProtoInterface,
+		loginMode: Authenticator.UserAuthenticationMode = .automatic
 	) async throws -> Authenticator {
 		let responseProvider = URLSession.defaultProvider
 		let clientMetadataEndpoint = ATProtoConstants.OAuth.clientId
@@ -83,13 +86,22 @@ public struct ATProtoOAuthenticator: Sendable {
 		let tokenHandling = Bluesky.tokenHandling(
 			account: handleOrDid,
 			server: serverConfig,
-			jwtGenerator: jwtGenerator
+			jwtGenerator: jwtGenerator,
+			validator: { tokenResponse, sub in
+				// TODO: GER-1343 - Implement validator
+				// after a token is issued, it is critical that the returned
+				// identity be resolved and its PDS match the issuing server
+				//
+				// check out draft-ietf-oauth-v2-1 section 7.3.1 for details
+				return true
+			}
 		)
 
 		let config = Authenticator.Configuration(
 			appCredentials: clientConfig.credentials,
 			loginStorage: loginStorage,
-			tokenHandling: tokenHandling
+			tokenHandling: tokenHandling,
+			mode: loginMode
 		)
 
 		return Authenticator(config: config)

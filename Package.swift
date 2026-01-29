@@ -15,11 +15,11 @@ let package = Package(
 	dependencies: [
 		.package(
 			url: "https://github.com/germ-network/autonomous-comm-protocol.git",
-			from: "1.1.4"
+			from: "1.1.10"
 		),
 		.package(
 			url: "https://github.com/germ-network/OAuthenticator",
-			exact: "0.7.1-germ.3"
+			exact: "0.7.2-germ.1"
 		),
 		.package(
 			url: "https://github.com/germ-network/ATResolve",

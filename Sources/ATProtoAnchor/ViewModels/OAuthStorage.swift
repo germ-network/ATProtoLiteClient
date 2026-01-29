@@ -38,6 +38,10 @@ public struct OAuthStorage: Sendable {
 	}
 
 	var loginStorage: LoginStorage {
-		.init(retrieveLogin: retrieveLogin, storeLogin: storeLogin)
+		.init(
+			retrieveLogin: retrieveLogin,
+			storeLogin: storeLogin,
+			clearLogin: clearLogin
+		)
 	}
 }

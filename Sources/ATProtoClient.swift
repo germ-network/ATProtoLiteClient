@@ -104,7 +104,7 @@ public struct ATProtoClient: ATProtoInterface {
 						did: did.fullId,
 						pdsURL: pdsUrl
 					)
-				let anchorHello = try AnchorHello.finalParse(
+				let anchorHello = try AnchorHello.finalParseOptional(
 					record.anchorHello
 				)
 				.tryUnwrap
