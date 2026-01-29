@@ -7,7 +7,7 @@
 
 import CommProtocol
 import Foundation
-import OAuthenticator
+public import OAuthenticator
 
 public struct ATProtoClient: ATProtoInterface {
 	public init() {}
