@@ -9,8 +9,10 @@ import CryptoKit
 import Foundation
 import OAuthenticator
 
-//namespace that creates an Authenticator object for ATProto
-enum ATProtoOAuthenticator {
+//re-export Authenticator as ATProtoOAuthenticator
+public typealias ATProtoOAuthenticator = Authenticator
+
+extension ATProtoOAuthenticator {
 	public static func create(
 		handleOrDid: String?,
 		pdsURL: URL,
