@@ -9,35 +9,11 @@ import CryptoKit
 import Foundation
 import OAuthenticator
 
-//store the loginstore and DPoPKey that (O)Authenticator needs
-public struct ATProtoOAuthenticator: Sendable {
-	public let signer: DPoPSigner.JWTGenerator
-	private let authenticator: Authenticator
+//re-export Authenticator as ATProtoOAuthenticator
+public typealias ATProtoOAuthenticator = Authenticator
 
-	public init(
-		handleOrDid: String?,
-		pdsURL: URL,
-		dpopSigner: @escaping DPoPSigner.JWTGenerator,
-		loginStorage: LoginStorage,
-		atProtoClient: ATProtoInterface,
-		loginMode: Authenticator.UserAuthenticationMode = .automatic
-	) async throws {
-		let storageCopy = loginStorage
-		signer = dpopSigner
-
-		authenticator =
-			try await Self
-			.createATProtoAuthenticator(
-				handleOrDid: handleOrDid,
-				pdsURL: pdsURL,
-				jwtGenerator: signer,
-				loginStorage: storageCopy,
-				atProtoClient: atProtoClient,
-				loginMode: loginMode
-			)
-	}
-
-	public static func createATProtoAuthenticator(
+extension ATProtoOAuthenticator {
+	public static func create(
 		handleOrDid: String?,
 		pdsURL: URL,
 		jwtGenerator: @escaping DPoPSigner.JWTGenerator,
@@ -106,19 +82,7 @@ public struct ATProtoOAuthenticator: Sendable {
 
 		return Authenticator(config: config)
 	}
-}
 
-// Authentication - capture initial authentication and pass-through to
-// authenticate
-extension ATProtoOAuthenticator {
-	@discardableResult
-	public func authenticate() async throws -> Login {
-		try await authenticator.authenticate()
-	}
-}
-
-// Creating and sending requests
-extension ATProtoOAuthenticator {
 	public static func createRequest(
 		_ requestURL: URL,
 		httpMethod: HTTPMethod,
@@ -137,7 +101,7 @@ extension ATProtoOAuthenticator {
 	public static func sendAuthenticatedRequest(
 		_ request: URLRequest,
 		withEncodingBody body: (Encodable & Sendable)? = nil,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws -> Data {
 		var urlRequest = request
 		if let body = body {

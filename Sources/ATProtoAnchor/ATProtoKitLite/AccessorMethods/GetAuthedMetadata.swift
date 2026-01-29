@@ -12,7 +12,7 @@ extension ATProtoKitLite {
 	public static func getAuthedMetadata(
 		for did: String,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws -> AppBskyLexiconLite.ProfileAuthedMetadata {
 		var requestURL = pdsURL.appending(path: "/xrpc/app.bsky.actor.getProfile")
 		let queryItems = [URLQueryItem(name: "actor", value: did)]

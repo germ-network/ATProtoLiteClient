@@ -172,7 +172,7 @@ extension MockATProto: ATProtoInterface {
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
 		for did: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) throws {
 		try write(
 			messagingDelegate: delegateRecord,
@@ -183,7 +183,7 @@ extension MockATProto: ATProtoInterface {
 	public func deleteDelegateRecord(
 		for did: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		try deleteDelegateRecord(
 			for: did,
@@ -195,7 +195,7 @@ extension MockATProto: ATProtoInterface {
 		for did: ATProtoDID,
 		newHello: AnchorHello,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		try setPDSKeyPackageRecord(
 			did: did,
@@ -206,7 +206,7 @@ extension MockATProto: ATProtoInterface {
 	public func deleteKeyPackage(
 		for did: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		try deleteKeyPackage(
 			for: did,
@@ -218,7 +218,7 @@ extension MockATProto: ATProtoInterface {
 		for did: ATProtoDID,
 		subjectDID: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		assert(resolvePDS[did] == pdsURL)
 		try pds(for: did).blocks.insert(subjectDID)
@@ -228,7 +228,7 @@ extension MockATProto: ATProtoInterface {
 		for myDid: ATProtoDID,
 		subjectDID: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		assert(resolvePDS[myDid] == pdsURL)
 		try pds(for: myDid).blocks.remove(subjectDID)
@@ -349,7 +349,7 @@ extension MockATProto {
 		for did: ATProtoDID,
 		newBio: String,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		try pds(for: did).profileRecord.profileText = newBio
 	}

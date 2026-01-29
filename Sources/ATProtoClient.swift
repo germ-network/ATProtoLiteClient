@@ -7,7 +7,7 @@
 
 import CommProtocol
 import Foundation
-import OAuthenticator
+public import OAuthenticator
 
 public struct ATProtoClient: ATProtoInterface {
 	public init() {}
@@ -144,7 +144,7 @@ public struct ATProtoClient: ATProtoInterface {
 		for did: ATProtoDID,
 		newHello: AnchorHello,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		let _ = try await ATProtoAuthAPI.updateKeyPackage(
 			for: did.fullId,
@@ -157,7 +157,7 @@ public struct ATProtoClient: ATProtoInterface {
 	public func deleteKeyPackage(
 		for did: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		try await ATProtoAuthAPI.deleteKeyPackage(
 			for: did.fullId,
@@ -169,7 +169,7 @@ public struct ATProtoClient: ATProtoInterface {
 	public func deleteDelegateRecord(
 		for did: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		try await ATProtoAuthAPI.deleteDelegateRecord(
 			for: did.fullId,
@@ -182,7 +182,7 @@ public struct ATProtoClient: ATProtoInterface {
 		for myDid: ATProtoDID,
 		subjectDID: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		try await ATProtoAuthAPI.createBlockRecord(
 			for: myDid.fullId,
@@ -196,7 +196,7 @@ public struct ATProtoClient: ATProtoInterface {
 		for myDid: ATProtoDID,
 		subjectDID: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		try await ATProtoAuthAPI
 			.deleteBlockRecord(
@@ -223,7 +223,7 @@ public struct ATProtoClient: ATProtoInterface {
 		for did: ATProtoDID,
 		newBio: String,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		let _ = try await ATProtoAuthAPI.updateBio(
 			for: did.fullId,
