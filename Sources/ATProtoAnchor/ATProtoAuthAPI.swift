@@ -13,7 +13,7 @@ public enum ATProtoAuthAPI {
 		for did: String,
 		newBio: String,
 		pdsURL: URL,
-		authenticator: Authenticator,
+		authenticator: ATProtoOAuthenticator,
 	) async throws -> ComAtprotoLexiconLite.StrongReference {
 		let profileRecord = try await ATProtoPublicAPI.getProfileRecord(
 			did: did,
@@ -49,7 +49,7 @@ public enum ATProtoAuthAPI {
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
 		for did: String,
 		pdsURL: URL,
-		authenticator: Authenticator,
+		authenticator: ATProtoOAuthenticator,
 	) async throws -> ComAtprotoLexiconLite.StrongReference {
 		return try await ATProtoKitLite.putRecord(
 			repository: did,
@@ -65,7 +65,7 @@ public enum ATProtoAuthAPI {
 	public static func deleteDelegateRecord(
 		for did: String,
 		pdsURL: URL,
-		authenticator: Authenticator,
+		authenticator: ATProtoOAuthenticator,
 	) async throws {
 		try await ATProtoKitLite.deleteRecord(
 			repository: did,
@@ -80,7 +80,7 @@ public enum ATProtoAuthAPI {
 		for did: String,
 		newHello: Data,
 		pdsURL: URL,
-		authenticator: Authenticator,
+		authenticator: ATProtoOAuthenticator,
 	) async throws -> ComAtprotoLexiconLite.StrongReference {
 		let hello = GermLexicon.ArchivedKeyPackageRecord(anchorHello: newHello)
 		return try await ATProtoKitLite.putRecord(
@@ -97,7 +97,7 @@ public enum ATProtoAuthAPI {
 	public static func deleteKeyPackage(
 		for did: String,
 		pdsURL: URL,
-		authenticator: Authenticator,
+		authenticator: ATProtoOAuthenticator,
 	) async throws {
 		try await ATProtoKitLite.deleteRecord(
 			repository: did,
@@ -112,7 +112,7 @@ public enum ATProtoAuthAPI {
 		for did: String,
 		subjectDID: String,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		let block = AppBskyLexiconLite.BlockRecord(
 			subjectDID: subjectDID,
@@ -133,7 +133,7 @@ public enum ATProtoAuthAPI {
 		for did: String,
 		subjectDID: String,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		await ATRecordTypeRegistryLite.shared.register(
 			types: [AppBskyLexiconLite.BlockRecord.self]
@@ -177,7 +177,7 @@ extension ATProtoAuthAPI {
 	public static func getAuthedMetadata(
 		for did: String,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws -> AppBskyLexiconLite.ViewerStateDefinition {
 		guard
 			let metadata = try await ATProtoKitLite.getAuthedMetadata(
@@ -194,7 +194,7 @@ extension ATProtoAuthAPI {
 	public static func checkIfMyAnchorBlocks(
 		_ did: String,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws -> Bool {
 		guard
 			let metadata = try await ATProtoKitLite.getAuthedMetadata(
@@ -211,7 +211,7 @@ extension ATProtoAuthAPI {
 	public static func checkIfMyAnchorIsBlocked(
 		by did: String,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws -> Bool {
 		guard
 			let metadata = try await ATProtoKitLite.getAuthedMetadata(

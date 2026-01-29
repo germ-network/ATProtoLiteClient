@@ -30,7 +30,7 @@ extension ATProtoKitLite {
 		shouldValidate: Bool? = true,
 		record: UnknownTypeLite,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws -> ComAtprotoLexiconLite.StrongReference {
 		let requestURL = pdsURL.appending(path: "/xrpc/com.atproto.repo.createRecord")
 

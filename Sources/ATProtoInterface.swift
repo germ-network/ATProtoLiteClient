@@ -54,27 +54,27 @@ public protocol ATProtoInterface: Sendable {
 		delegateRecord: GermLexicon.MessagingDelegateRecord,
 		for: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator,
+		authenticator: ATProtoOAuthenticator,
 	) async throws
 
 	func deleteDelegateRecord(
 		for: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator,
+		authenticator: ATProtoOAuthenticator,
 	) async throws
 
 	func createBlockRecord(
 		for: ATProtoDID,
 		subjectDID: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws
 
 	func deleteBlockRecord(
 		for: ATProtoDID,
 		subjectDID: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws
 
 	func fetchImage(
@@ -88,19 +88,19 @@ public protocol ATProtoInterface: Sendable {
 		for: ATProtoDID,
 		newHello: AnchorHello,
 		pdsURL: URL,
-		authenticator: Authenticator,
+		authenticator: ATProtoOAuthenticator,
 	) async throws
 
 	func deleteKeyPackage(
 		for: ATProtoDID,
 		pdsURL: URL,
-		authenticator: Authenticator,
+		authenticator: ATProtoOAuthenticator,
 	) async throws
 
 	func updateBio(
 		for did: ATProtoDID,
 		newBio: String,
 		pdsURL: URL,
-		authenticator: Authenticator,
+		authenticator: ATProtoOAuthenticator,
 	) async throws
 }

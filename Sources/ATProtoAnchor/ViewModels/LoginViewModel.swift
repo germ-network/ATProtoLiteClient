@@ -29,7 +29,7 @@ import os
 	let oauthStorage: OAuthStorage
 
 	//authenticator object generated from the loginCredential
-	public var _authenticator: Authenticator? = nil
+	public var _authenticator: ATProtoOAuthenticator? = nil
 
 	static public func create(
 		handle: String,

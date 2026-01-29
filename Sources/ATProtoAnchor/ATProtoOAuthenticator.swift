@@ -101,7 +101,7 @@ extension ATProtoOAuthenticator {
 	public static func sendAuthenticatedRequest(
 		_ request: URLRequest,
 		withEncodingBody body: (Encodable & Sendable)? = nil,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws -> Data {
 		var urlRequest = request
 		if let body = body {

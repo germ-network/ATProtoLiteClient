@@ -15,7 +15,7 @@ extension ATProtoKitLite {
 		collection: String,
 		recordKey: String,
 		pdsURL: URL,
-		authenticator: Authenticator
+		authenticator: ATProtoOAuthenticator
 	) async throws {
 		let requestURL = pdsURL.appending(path: "/xrpc/com.atproto.repo.deleteRecord")
 		let requestBody = ComAtprotoLexiconLite.DeleteRecordRequestBody(
