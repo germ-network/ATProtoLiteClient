@@ -73,13 +73,19 @@ public struct ATProtoClient: ATProtoInterface {
 	}
 
 	public func messageDelegateFetcher() async -> (ATProtoDID, URL) async throws ->
-		GermLexicon.MessagingDelegateRecord
+		GermLexicon.MessagingDelegateRecord?
 	{
 		{ (did, pdsUrl) in
-			try await ATProtoPublicAPI.getGermMessagingDelegate(
-				did: did.fullId,
-				pdsURL: pdsUrl
-			)
+			do {
+				return try await ATProtoPublicAPI.getGermMessagingDelegate(
+					did: did.fullId,
+					pdsURL: pdsUrl
+				)
+			} catch ATProtoAPIError.recordNotFound {
+				return nil
+			} catch {
+				throw error
+			}
 		}
 	}
 

@@ -35,7 +35,7 @@ public protocol ATProtoInterface: Sendable {
 		(ATProtoDID, URL) async throws -> String
 	)
 	func messageDelegateFetcher() async -> (
-		(ATProtoDID, URL) async throws -> GermLexicon.MessagingDelegateRecord
+		(ATProtoDID, URL) async throws -> GermLexicon.MessagingDelegateRecord?
 	)
 	func followsFetcher(
 		did: ATProtoDID,
