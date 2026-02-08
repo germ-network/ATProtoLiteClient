@@ -128,11 +128,10 @@ extension MockATProto: ATProtoInterface {
 	}
 
 	public func messageDelegateFetcher() async
-		-> @Sendable (ATProtoDID, URL) async throws -> GermLexicon.MessagingDelegateRecord
+		-> @Sendable (ATProtoDID, URL) async throws -> GermLexicon.MessagingDelegateRecord?
 	{
 		{ (did, _) in
-			try await self.messagingDelegateRecord(for: did)
-				.tryUnwrap
+			await self.messagingDelegateRecord(for: did)
 		}
 	}
 
