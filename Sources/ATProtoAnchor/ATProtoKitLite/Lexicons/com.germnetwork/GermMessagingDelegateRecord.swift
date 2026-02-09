@@ -105,5 +105,6 @@ extension GermLexicon {
 	public enum ShowButtonTo: String, Sendable, Codable {
 		case usersIFollow
 		case everyone
+		case none
 	}
 }
