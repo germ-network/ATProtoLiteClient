@@ -22,11 +22,11 @@ extension GermLexicon {
 
 		/// Required, Opaque to AppViews (possible future - parse this and validate signature over the DID in keyPackage)
 		/// ed25519 public key prefixed with a byte enum
-		public let currentKey: Data
+		public let currentKey: ShimLexiconBytes
 
 		/// Required, Opaque to AppViews
 		/// Contains MLS KeyPackage(s), and other signature data, and is signed by the currentKey
-		public let keyPackage: Data?
+		public let keyPackage: ShimLexiconBytes?
 
 		/// Optional
 		/// Encapsulates the required url and `showButtonTo`  properties to show a button to other users
@@ -55,9 +55,9 @@ extension GermLexicon {
 
 			self.version = try container.decode(String.self, forKey: CodingKeys.version)
 			self.currentKey = try container.decode(
-				Data.self, forKey: CodingKeys.currentKey)
+				ShimLexiconBytes.self, forKey: CodingKeys.currentKey)
 			self.keyPackage = try container.decodeIfPresent(
-				Data.self, forKey: CodingKeys.keyPackage)
+				ShimLexiconBytes.self, forKey: CodingKeys.keyPackage)
 			self.messageMe = try container.decodeIfPresent(
 				MessageMeInstructions.self, forKey: CodingKeys.messageMe)
 			self.continuityProofs = try container.decodeIfPresent(
@@ -72,8 +72,8 @@ extension GermLexicon {
 			continuityProofs: [Data]?
 		) {
 			self.version = version
-			self.currentKey = currentKey
-			self.keyPackage = keyPackage
+			self.currentKey = .init(bytes: currentKey)
+			self.keyPackage = .init(bytes: keyPackage)
 			self.messageMe = messageMe
 			self.continuityProofs = continuityProofs
 		}
