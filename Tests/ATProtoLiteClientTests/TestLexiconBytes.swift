@@ -42,7 +42,7 @@ struct TestLexiconBytes {
 		  }
 		"""
 
-	@Test func testDecode() async throws {
+	@Test func testDecode() throws {
 		let decodedValid = try JSONDecoder().decode(
 			GermLexicon.MessagingDelegateRecord.self,
 			from: Self.valid.utf8Data
@@ -67,6 +67,30 @@ struct TestLexiconBytes {
 		let lexiconBytes = currentKey as! [String: Any]
 
 		let base64 = lexiconBytes["$bytes"] as! String
+	}
+	
+	@Test func testValidCycle() throws {
+		let decodedValid = try JSONDecoder().decode(
+			GermLexicon.MessagingDelegateRecord.self,
+			from: Self.valid.utf8Data
+		)
+		let encoded = try JSONEncoder().encode(decodedValid)
+		let decodedEncoded = try JSONDecoder().decode(
+			GermLexicon.MessagingDelegateRecord.self,
+			from: encoded
+		)
+	}
+	
+	@Test func testInvalidCycle() throws {
+		let decodedInvalid = try JSONDecoder().decode(
+			GermLexicon.MessagingDelegateRecord.self,
+			from: Self.valid.utf8Data
+		)
+		let encoded = try JSONEncoder().encode(decodedInvalid)
+		let decodedEncoded = try JSONDecoder().decode(
+			GermLexicon.MessagingDelegateRecord.self,
+			from: encoded
+		)
 	}
 
 }
