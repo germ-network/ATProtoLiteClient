@@ -52,6 +52,21 @@ struct TestLexiconBytes {
 			GermLexicon.MessagingDelegateRecord.self,
 			from: Self.invalid.utf8Data
 		)
+
+		#expect(decodedValid == decodedInvalid)
+
+		let encodedValid = try JSONEncoder().encode(decodedValid)
+
+		let genericDecoded =
+			try JSONSerialization.jsonObject(
+				with: encodedValid
+			) as! [String: Any]
+
+		let currentKey = genericDecoded["currentKey"]!
+
+		let lexiconBytes = currentKey as! [String: Any]
+
+		let base64 = lexiconBytes["$bytes"] as! String
 	}
 
 }

@@ -46,8 +46,8 @@ public struct ShimLexiconBytes: Codable, Equatable, Hashable, Sendable {
 		}
 	}
 
-	//	public func encode(to encoder: any Encoder) throws {
-	//		var container = encoder.singleValueContainer()
-	//		try container.encode(LexiconBytes(bytes: bytes))
-	//	}
+	public func encode(to encoder: any Encoder) throws {
+		var container = encoder.singleValueContainer()
+		try container.encode(LexiconBytes(bytes: bytes))
+	}
 }
