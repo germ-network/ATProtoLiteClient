@@ -53,5 +53,28 @@ struct TestLexiconBytes {
 			from: Self.invalid.utf8Data
 		)
 	}
+	
+	@Test func testEncode() async throws {
+		let decodedValid = try JSONDecoder().decode(
+			GermLexicon.MessagingDelegateRecord.self,
+			from: Self.valid.utf8Data
+		)
+
+		
+		let encoded = try JSONEncoder().encode(decodedValid)
+		
+		let generic = try JSONSerialization.jsonObject(with: encoded) as! [String: Any]
+		
+
+		
+		let decodedEncoded = try JSONDecoder().decode(
+			GermLexicon.MessagingDelegateRecord.self,
+			from: encoded
+		)
+		
+		let currentKey = generic["currentKey"] as! String
+		let data = Data(base64Encoded: currentKey)!
+		print(data)
+	}
 
 }
