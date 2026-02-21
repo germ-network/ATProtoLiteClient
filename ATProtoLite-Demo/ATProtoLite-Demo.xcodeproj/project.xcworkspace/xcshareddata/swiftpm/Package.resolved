@@ -1,13 +1,13 @@
 {
-  "originHash" : "a181d4ea539bab301ef81799ae7006319ef1881564c08386cfc9670493ad267c",
+  "originHash" : "7698967d6bb59aa11fc8c62e14e7ce4d7524dfcb07fc7f038bb56a437f1e829f",
   "pins" : [
     {
       "identity" : "atresolve",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/germ-network/ATResolve",
       "state" : {
-        "revision" : "6b69a7bd310fd8a4b1a2281d6d8665ebe889b6bc",
-        "version" : "1.1.3"
+        "revision" : "26459d9d6e7deb27066b9d7d2931279acc107138",
+        "version" : "1.0.0-germ.2"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/germ-network/autonomous-comm-protocol.git",
       "state" : {
-        "revision" : "f939a2ff62b065dfd792dc9f11b75f2ddfa4adf1",
-        "version" : "1.1.9"
+        "revision" : "295a73d20310c82ca84e46c4dde8af1d49b5a3d8",
+        "version" : "1.1.10"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/germ-network/OAuthenticator",
       "state" : {
-        "revision" : "2e3936413622bf16a83928b91aaf8ae4ace769f9",
-        "version" : "0.7.1-germ.1"
+        "revision" : "f657aa04cb6241c0811052264f345046f6938274",
+        "version" : "0.7.2-germ.1"
       }
     },
     {
