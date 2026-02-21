@@ -86,16 +86,16 @@ struct CachedAuthenticatedView: View {
 							}
 						}
 						if let blocked {
-							Text("Blocked: \(blocked)")
+							Text(verbatim: "Blocked: \(blocked)")
 						}
 						if let blocking {
-							Text("Blocking: \(blocking)")
+							Text(verbatim: "Blocking: \(blocking)")
 						}
 						if let following {
-							Text("Following: \(following)")
+							Text(verbatim: "Following: \(following)")
 						}
 						if let followedBy {
-							Text("Followed by: \(followedBy)")
+							Text(verbatim: "Followed by: \(followedBy)")
 						}
 					}
 				}
