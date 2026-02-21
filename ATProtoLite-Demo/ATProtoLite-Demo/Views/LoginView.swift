@@ -73,10 +73,9 @@ struct LoginView: View {
 			)
 			self.pds = pds
 
-			let pdsURL = try URL(string: pds!)!
+			let pdsURL = URL(string: pds!)!
 
 			try await viewModel.getAuthenticator(pdsURL: pdsURL)
-				.authenticator
 				.authenticate()
 		}
 		self.authenticatingTask = authenticatingTask

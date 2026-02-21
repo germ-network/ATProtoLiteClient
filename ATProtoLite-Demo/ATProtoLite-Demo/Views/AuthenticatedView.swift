@@ -86,16 +86,16 @@ struct CachedAuthenticatedView: View {
 							}
 						}
 						if let blocked {
-							Text("Blocked: \(blocked)")
+							Text(verbatim: "Blocked: \(blocked)")
 						}
 						if let blocking {
-							Text("Blocking: \(blocking)")
+							Text(verbatim: "Blocking: \(blocking)")
 						}
 						if let following {
-							Text("Following: \(following)")
+							Text(verbatim: "Following: \(following)")
 						}
 						if let followedBy {
-							Text("Followed by: \(followedBy)")
+							Text(verbatim: "Followed by: \(followedBy)")
 						}
 					}
 				}
@@ -113,7 +113,7 @@ struct CachedAuthenticatedView: View {
 			let metadata = try await ATProtoAuthAPI.getAuthedMetadata(
 				for: theirDID.fullId,
 				pdsURL: pdsURL,
-				authenticator: authenticator.authenticator
+				authenticator: authenticator
 			)
 			blocking = metadata.blockingURI != nil
 			blocked = metadata.isBlocked
@@ -144,7 +144,7 @@ struct CachedAuthenticatedView: View {
 				),
 				for: myDID.fullId,
 				pdsURL: pdsURL,
-				authenticator: authenticator.authenticator
+				authenticator: authenticator
 			)
 		}
 	}
