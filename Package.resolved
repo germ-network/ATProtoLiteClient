@@ -1,5 +1,5 @@
 {
-  "originHash" : "6a3a0a466b47fdee2328ec85b0494c50e366e42ec42714e94e1fd6c28e926ca8",
+  "originHash" : "bdb0186f1f91c5c171758ac3461fb219ff39c381d189d7a9042e8d84dd108ffb",
   "pins" : [
     {
       "identity" : "atresolve",
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/germ-network/OAuthenticator",
       "state" : {
-        "revision" : "f657aa04cb6241c0811052264f345046f6938274",
-        "version" : "0.7.2-germ.1"
+        "branch" : "fix/dpop-signer-nonce-tracking",
+        "revision" : "28a776118c1b5e660c993a570af55458fc95c555"
       }
     },
     {
