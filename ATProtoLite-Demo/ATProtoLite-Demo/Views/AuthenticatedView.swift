@@ -37,6 +37,8 @@ struct CachedAuthenticatedView: View {
 				case .entry(let error):
 					HStack {
 						TextField("@", text: $storedHandle)
+							.textInputAutocapitalization(.never)
+							.autocorrectionDisabled()
 						Button("Check Handle", action: check)
 					}
 					if let error {
@@ -68,7 +70,10 @@ struct CachedAuthenticatedView: View {
 							Text("@")
 							TextField(
 								"handle.bsky.social",
-								text: $otherHandle)
+								text: $otherHandle
+							)
+								.textInputAutocapitalization(.never)
+								.autocorrectionDisabled()
 							Spacer()
 						}
 						Button("Make authed fetch") {
