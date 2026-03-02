@@ -34,7 +34,7 @@
       "location" : "https://github.com/germ-network/OAuthenticator",
       "state" : {
         "branch" : "fix/dpop-signer-nonce-tracking",
-        "revision" : "427e0b534c0e77a6c7839958dc1116298d624a67"
+        "revision" : "1dbb38393cd81532249824619fe37f1d3601bf4f"
       }
     },
     {
