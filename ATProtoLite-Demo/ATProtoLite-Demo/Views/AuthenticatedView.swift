@@ -118,7 +118,7 @@ struct CachedAuthenticatedView: View {
 			let metadata = try await ATProtoAuthAPI.getAuthedMetadata(
 				for: theirDID.fullId,
 				pdsURL: pdsURL,
-				authenticator: authenticator.authenticator
+				authenticator: authenticator
 			)
 			blocking = metadata.blockingURI != nil
 			blocked = metadata.isBlocked
@@ -149,7 +149,7 @@ struct CachedAuthenticatedView: View {
 				),
 				for: myDID.fullId,
 				pdsURL: pdsURL,
-				authenticator: authenticator.authenticator
+				authenticator: authenticator
 			)
 		}
 	}
