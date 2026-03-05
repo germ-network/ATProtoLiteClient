@@ -34,6 +34,7 @@ struct UnauthenticatedView: View {
 					Text("@")
 					TextField("Handle", text: $username)
 						.textInputAutocapitalization(.never)
+						.autocorrectionDisabled()
 				}
 				.padding()
 				.background(RoundedRectangle(cornerRadius: 10).stroke(.gray))

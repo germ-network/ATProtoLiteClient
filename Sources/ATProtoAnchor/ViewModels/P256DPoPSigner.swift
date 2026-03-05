@@ -17,8 +17,6 @@ extension P256.Signing.PrivateKey {
 
 			let payload: any Encodable = {
 				if let nonce = parameters.nonce,
-					let authorizationServerIssuer = parameters
-						.issuingServer,
 					let accessTokenHash = parameters.tokenHash
 				{
 					DPoPRequestPayload(
@@ -30,8 +28,6 @@ extension P256.Signing.PrivateKey {
 							Date.now.timeIntervalSince1970
 								+ 3600),
 						nonce: nonce,
-						authorizationServerIssuer:
-							authorizationServerIssuer,
 						accessTokenHash: accessTokenHash
 					)
 				} else {
