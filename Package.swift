@@ -19,7 +19,7 @@ let package = Package(
 		),
 		.package(
 			url: "https://github.com/germ-network/OAuthenticator",
-			branch: "fix/dpop-signer-nonce-tracking"
+			exact: "0.7.2-germ.2"
 		),
 		.package(
 			url: "https://github.com/germ-network/ATResolve",
